@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/circle_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.vanh1200.lovemusic.MainActivity">
+        <activity android:name="com.vanh1200.lovemusic.screen.main.MainActivity" />
+        <activity
+            android:name=".screen.splash.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
