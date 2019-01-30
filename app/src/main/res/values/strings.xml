@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Love Music</string>
+    <string name="text_search_tracks">Search tracks</string>
+    <string name="text_all_audio">All Audio</string>
+    <string name="text_rock">Rock</string>
+    <string name="text_ambient">Ambient</string>
+    <string name="text_classical">Classical</string>
+    <string name="text_country">Country</string>
+    <string name="text_home">Home</string>
+    <string name="text_library">Library</string>
+    <string name="text_setting">Setting</string>
+    <string name="text_temp_text">temp text</string>
 </resources>
