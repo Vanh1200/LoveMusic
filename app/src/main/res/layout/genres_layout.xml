@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dp_10">
+
+    <TextView
+        android:id="@+id/text_popular_playlist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="@string/text_popular_playlist"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/image_all_music"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_all_music"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:scaleType="centerCrop"
+        android:src="@drawable/all_music"
+        app:layout_constraintEnd_toStartOf="@id/image_all_audio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_popular_playlist" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_all_music"
+        app:layout_constraintEnd_toEndOf="@id/image_all_music"
+        app:layout_constraintStart_toStartOf="@id/image_all_music"
+        app:layout_constraintTop_toTopOf="@id/image_all_music" />
+
+    <TextView
+        android:id="@+id/text_all_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_all_music"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_all_music"
+        app:layout_constraintEnd_toEndOf="@id/image_all_music"
+        app:layout_constraintStart_toStartOf="@id/image_all_music"
+        app:layout_constraintTop_toTopOf="@id/image_all_music" />
+
+    <ImageView
+        android:id="@+id/image_all_audio"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:scaleType="centerCrop"
+        android:src="@drawable/all_audio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_all_music"
+        app:layout_constraintTop_toTopOf="@id/image_all_music" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_all_audio"
+        app:layout_constraintEnd_toEndOf="@id/image_all_audio"
+        app:layout_constraintStart_toStartOf="@id/image_all_audio"
+        app:layout_constraintTop_toTopOf="@id/image_all_audio" />
+
+    <TextView
+        android:id="@+id/text_all_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_all_audio"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_all_audio"
+        app:layout_constraintEnd_toEndOf="@id/image_all_audio"
+        app:layout_constraintStart_toStartOf="@id/image_all_audio"
+        app:layout_constraintTop_toTopOf="@id/image_all_audio" />
+
+    <ImageView
+        android:id="@+id/image_rock"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rock"
+        app:layout_constraintEnd_toStartOf="@id/image_ambient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_all_music" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_rock"
+        app:layout_constraintEnd_toEndOf="@id/image_rock"
+        app:layout_constraintStart_toStartOf="@id/image_rock"
+        app:layout_constraintTop_toTopOf="@id/image_rock" />
+
+    <TextView
+        android:id="@+id/text_rock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_rock"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_rock"
+        app:layout_constraintEnd_toEndOf="@id/image_rock"
+        app:layout_constraintStart_toStartOf="@id/image_rock"
+        app:layout_constraintTop_toTopOf="@id/image_rock" />
+
+    <ImageView
+        android:id="@+id/image_ambient"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ambient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_rock"
+        app:layout_constraintTop_toTopOf="@id/image_rock" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_ambient"
+        app:layout_constraintEnd_toEndOf="@id/image_ambient"
+        app:layout_constraintStart_toStartOf="@id/image_ambient"
+        app:layout_constraintTop_toTopOf="@id/image_ambient" />
+
+    <TextView
+        android:id="@+id/text_ambient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ambient"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_ambient"
+        app:layout_constraintEnd_toEndOf="@id/image_ambient"
+        app:layout_constraintStart_toStartOf="@id/image_ambient"
+        app:layout_constraintTop_toTopOf="@id/image_ambient" />
+
+    <ImageView
+        android:id="@+id/image_classical"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:scaleType="centerCrop"
+        android:src="@drawable/classical"
+        app:layout_constraintEnd_toStartOf="@id/image_country"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_rock" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_classical"
+        app:layout_constraintEnd_toEndOf="@id/image_classical"
+        app:layout_constraintStart_toStartOf="@id/image_classical"
+        app:layout_constraintTop_toTopOf="@id/image_classical" />
+
+    <TextView
+        android:id="@+id/text_classical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_classical"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_classical"
+        app:layout_constraintEnd_toEndOf="@id/image_classical"
+        app:layout_constraintStart_toStartOf="@id/image_classical"
+        app:layout_constraintTop_toTopOf="@id/image_classical" />
+
+    <ImageView
+        android:id="@+id/image_country"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_120"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:scaleType="centerCrop"
+        android:src="@drawable/country"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_classical"
+        app:layout_constraintTop_toTopOf="@id/image_classical" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_country"
+        app:layout_constraintEnd_toEndOf="@id/image_country"
+        app:layout_constraintStart_toStartOf="@id/image_country"
+        app:layout_constraintTop_toTopOf="@id/image_country" />
+
+    <TextView
+        android:id="@+id/text_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_country"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_country"
+        app:layout_constraintEnd_toEndOf="@id/image_country"
+        app:layout_constraintStart_toStartOf="@id/image_country"
+        app:layout_constraintTop_toTopOf="@id/image_country" />
+
+</android.support.constraint.ConstraintLayout>
