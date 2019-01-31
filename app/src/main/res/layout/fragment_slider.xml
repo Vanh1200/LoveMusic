@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_slider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_200"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ambient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_black_transparent"
+        app:layout_constraintBottom_toBottomOf="@id/image_slider"
+        app:layout_constraintEnd_toEndOf="@id/image_slider"
+        app:layout_constraintStart_toStartOf="@id/image_slider"
+        app:layout_constraintTop_toTopOf="@id/image_slider" />
+
+    <ImageView
+        android:id="@+id/image_small_artwork"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ambient"
+        app:layout_constraintBottom_toBottomOf="@id/image_slider"
+        app:layout_constraintStart_toStartOf="@id/image_slider" />
+
+    <TextView
+        android:id="@+id/text_track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="@string/text_temp_text"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toTopOf="@id/text_artist"
+        app:layout_constraintStart_toEndOf="@id/image_small_artwork"
+        app:layout_constraintTop_toTopOf="@id/image_small_artwork"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_temp_text"
+        android:textColor="@color/color_light_brown"
+        android:textSize="@dimen/sp_18"
+        app:layout_constraintBottom_toBottomOf="@id/image_small_artwork"
+        app:layout_constraintStart_toStartOf="@id/text_track"
+        app:layout_constraintTop_toBottomOf="@id/text_track" />
+
+</android.support.constraint.ConstraintLayout>
