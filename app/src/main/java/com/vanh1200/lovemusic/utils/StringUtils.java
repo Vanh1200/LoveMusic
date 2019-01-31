@@ -39,4 +39,8 @@ public class StringUtils {
         }
         return stringBuilder.toString();
     }
+
+    public static String reformatImageUrl(String url){
+        return url.replace(Constants.IMAGE_LARGE, Constants.IMAGE_FULL);
+    }
 }

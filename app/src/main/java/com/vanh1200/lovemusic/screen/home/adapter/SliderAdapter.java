@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.vanh1200.lovemusic.screen.home.SliderFragment;
+
 import java.util.List;
 
 public class SliderAdapter extends FragmentPagerAdapter {
@@ -13,13 +15,14 @@ public class SliderAdapter extends FragmentPagerAdapter {
     private static final int THIRD_FRAGMENT = 2;
     private static final int FOURTH_FRAGMENT = 3;
     private static final int FIFTH_FRAGMENT = 4;
-    private List<Fragment> mFragments;
 
-    public List<Fragment> getFragmentSlider() {
+    private List<SliderFragment> mFragments;
+
+    public List<SliderFragment> getFragmentSlider() {
         return mFragments;
     }
 
-    public void setFragmentSlider(List<Fragment> fragmentSlider) {
+    public void setFragmentSlider(List<SliderFragment> fragmentSlider) {
         mFragments = fragmentSlider;
     }
 

@@ -6,20 +6,28 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseFragment;
+import com.vanh1200.lovemusic.data.model.Track;
+import com.vanh1200.lovemusic.data.repository.TrackRepository;
+import com.vanh1200.lovemusic.data.source.local.TrackLocalDataSource;
+import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
 import com.vanh1200.lovemusic.screen.home.adapter.SliderAdapter;
-import com.vanh1200.lovemusic.screen.home.adapter.SliderFragment;
+import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements HomeContract.View {
     public static HomeFragment sInstance;
     private ViewPager mViewPager;
     private SliderAdapter mSliderAdapter;
     private Toolbar mToolbar;
+    private HomeContract.Presenter mPresenter;
+    private TrackRepository mTrackRepository;
+    List<SliderFragment> mFragments;
 
     @Override
     protected int getLayoutResource() {
@@ -30,29 +38,20 @@ public class HomeFragment extends BaseFragment {
     protected void initViewsOnCreateView(View view, Bundle saveInstanceState) {
         mViewPager = view.findViewById(R.id.view_pager);
         initToolbar(view);
-        initViewPager();
+        mTrackRepository = TrackRepository.getInstance(TrackLocalDataSource.getInstance(getActivity()),
+                TrackRemoteDataSource.getInstance());
+        mPresenter = new HomePresenter(mTrackRepository);
+        mPresenter.setView(this);
+        initDataForSlider();
+    }
+
+    private void initDataForSlider() {
+        mPresenter.initDataForSlider(Constants.GENRES_ALL_MUSIC);
     }
 
     private void initToolbar(View view) {
         mToolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-    }
-
-    private void initViewPager() {
-        mSliderAdapter = new SliderAdapter(getFragmentManager());
-        SliderFragment firstSlide = SliderFragment.newInstance();
-        SliderFragment secondSlide = SliderFragment.newInstance();
-        SliderFragment thirdSlide = SliderFragment.newInstance();
-        SliderFragment fourthSlide = SliderFragment.newInstance();
-        SliderFragment fifthSlide = SliderFragment.newInstance();
-        List<Fragment> mFragments = new ArrayList<>();
-        mFragments.add(firstSlide);
-        mFragments.add(secondSlide);
-        mFragments.add(thirdSlide);
-        mFragments.add(fourthSlide);
-        mFragments.add(fifthSlide);
-        mSliderAdapter.setFragmentSlider(mFragments);
-        mViewPager.setAdapter(mSliderAdapter);
     }
 
     @Override
@@ -64,5 +63,26 @@ public class HomeFragment extends BaseFragment {
             sInstance = new HomeFragment();
         }
         return sInstance;
+    }
+
+    @Override
+    public void onFetchDataForSliderSuccess(List<Track> tracks) {
+        mSliderAdapter = new SliderAdapter(getFragmentManager());
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < tracks.size(); i++) {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.KEY_BUNDLE_IMAGE_URL, tracks.get(i).getArtworkUrl());
+            bundle.putString(Constants.KEY_BUNDLE_TITLE, tracks.get(i).getTitle());
+            bundle.putString(Constants.KEY_BUNDLE_ARTIST, tracks.get(i).getPublisher().getArtist());
+            SliderFragment sliderFragment = SliderFragment.newInstance(bundle);
+            mFragments.add(sliderFragment);
+        }
+        mSliderAdapter.setFragmentSlider(mFragments);
+        mViewPager.setAdapter(mSliderAdapter);
+    }
+
+    @Override
+    public void onFetchDataForSliderFailed(String error) {
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

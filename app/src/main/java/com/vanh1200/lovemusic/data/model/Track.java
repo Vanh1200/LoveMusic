@@ -14,6 +14,8 @@ public class Track implements Parcelable {
     private long mDuration;
     private Publisher mPublisher;
     private long mPlaybackCount;
+    private long mLikesCount;
+    private long mDownloadCount;
     private String mArtworkUrl;
     private String mDownloadUrl;
     private String mStreamUrl;
@@ -32,6 +34,8 @@ public class Track implements Parcelable {
         mStreamable = in.readByte() != 0;
         mDuration = in.readLong();
         mPublisher = in.readParcelable(Publisher.class.getClassLoader());
+        mPlaybackCount = in.readLong();
+        mLikesCount = in.readLong();
         mPlaybackCount = in.readLong();
         mArtworkUrl = in.readString();
         mDownloadUrl = in.readString();
@@ -56,6 +60,8 @@ public class Track implements Parcelable {
         dest.writeLong(mDuration);
         dest.writeParcelable(mPublisher, flags);
         dest.writeLong(mPlaybackCount);
+        dest.writeLong(mLikesCount);
+        dest.writeLong(mDownloadCount);
         dest.writeString(mArtworkUrl);
         dest.writeString(mDownloadUrl);
         dest.writeString(mStreamUrl);
@@ -174,6 +180,22 @@ public class Track implements Parcelable {
 
     public void setDownloaded(boolean downloaded) {
         mIsDownloaded = downloaded;
+    }
+
+    public long getLikesCount() {
+        return mLikesCount;
+    }
+
+    public void setLikesCount(long likesCount) {
+        mLikesCount = likesCount;
+    }
+
+    public long getDownloadCount() {
+        return mDownloadCount;
+    }
+
+    public void setDownloadCount(long downloadCount) {
+        mDownloadCount = downloadCount;
     }
 
     public static final Creator<Track> CREATOR
