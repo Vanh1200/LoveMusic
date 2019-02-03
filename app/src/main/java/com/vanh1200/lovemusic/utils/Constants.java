@@ -15,7 +15,7 @@ public final class Constants {
             = "https://api.soundcloud.com/tracks/%d/stream?client_id=%s";
 
     public static final String KIND_TOP = "top";
-    public static final String KIND_TREND = "trend";
+    public static final String KIND_TREND = "trending";
     public static final String GENRES_ALL_MUSIC = "soundcloud:genres:all-music";
     public static final String GENRES_ALL_AUDIO = "soundcloud:genres:all-audio";
     public static final String GENRES_ROCK = "soundcloud:genres:alternativerock";
@@ -24,8 +24,10 @@ public final class Constants {
     public static final String GENRES_COUNTRY = "soundcloud:genres:country";
 
     public static final int OFFSET = 10;
+    public static final int OFFSET_SUGGESTED = 16;
     public static final int LIMIT = 50;
     public static final int LIMIT_SLIDER = 5;
+    public static final int LIMIT_SUGGESTED = 20;
 
     public static final String KEY_BUNDLE_TITLE = "key_bundle_title";
     public static final String KEY_BUNDLE_IMAGE_URL = "key_bundle_image_url";
@@ -33,4 +35,5 @@ public final class Constants {
 
     public static final String IMAGE_LARGE = "large";
     public static final String IMAGE_FULL = "t500x500";
+    public static final String UNKNOWN = "unknown";
 }

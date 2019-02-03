@@ -37,7 +37,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_38"
                     android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_30"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:background="@drawable/bg_search"
                     android:drawableLeft="@drawable/ic_search_black_24dp"
                     android:drawablePadding="@dimen/dp_15"
@@ -68,7 +68,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_200" />
+                android:layout_height="@dimen/dp_250" />
 
             <include
                 layout="@layout/suggested_layout"

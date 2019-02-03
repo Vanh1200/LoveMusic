@@ -6,7 +6,9 @@ import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
 
 import java.util.List;
 
-public class HomePresenter implements HomeContract.Presenter, TrackRemoteDataSource.OnGetTracksByGenre {
+public class HomePresenter implements HomeContract.Presenter,
+        TrackRemoteDataSource.OnGetTracksByGenre,
+        TrackRemoteDataSource.OnGetSuggestedTracks {
     private HomeContract.View mView;
     private TrackRepository mTrackRepository;
 
@@ -32,5 +34,20 @@ public class HomePresenter implements HomeContract.Presenter, TrackRemoteDataSou
     @Override
     public void initDataForSlider(String genre) {
         mTrackRepository.getTracksByGenre(genre, this);
+    }
+
+    @Override
+    public void initDataForSuggestedTracks() {
+        mTrackRepository.getSuggestedTracks(this);
+    }
+
+    @Override
+    public void onGetSuggestedTracksSuccess(List<Track> tracks) {
+        mView.onFetchDataForSuggestedSuccess(tracks);
+    }
+
+    @Override
+    public void onGetSuggestedTracksFailed(String error) {
+        mView.onFetchDataForSuggestedFailed(error);
     }
 }

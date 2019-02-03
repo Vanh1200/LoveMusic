@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Love Music</string>
     <string name="text_search_tracks">Search tracks</string>
+    <string name="text_all_music">All Music</string>
     <string name="text_all_audio">All Audio</string>
     <string name="text_rock">Rock</string>
     <string name="text_ambient">Ambient</string>

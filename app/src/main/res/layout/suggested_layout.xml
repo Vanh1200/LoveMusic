@@ -16,9 +16,9 @@
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_suggested_song"
+        android:id="@+id/recycle_suggested_tracks"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_180"
-        android:layout_marginStart="@dimen/dp_10" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_5" />
 
 </LinearLayout>

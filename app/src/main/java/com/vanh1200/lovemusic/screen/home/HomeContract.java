@@ -10,10 +10,13 @@ public interface HomeContract {
     interface View {
         void onFetchDataForSliderSuccess(List<Track> tracks);
         void onFetchDataForSliderFailed(String mess);
+        void onFetchDataForSuggestedSuccess(List<Track> tracks);
+        void onFetchDataForSuggestedFailed(String error);
     }
 
     interface Presenter extends BasePresenter<View> {
         void initDataForSlider(String genre);
+        void initDataForSuggestedTracks();
     }
 }
 

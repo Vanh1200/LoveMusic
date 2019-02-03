@@ -31,4 +31,9 @@ public class TrackRepository implements TrackDataSource.LocalDataSource,
     public List<Track> getTracksByGenre(String genre, TrackRemoteDataSource.OnGetTracksByGenre callback) {
         return mRemoteDataSource.getTracksByGenre(genre, callback);
     }
+
+    @Override
+    public List<Track> getSuggestedTracks(TrackRemoteDataSource.OnGetSuggestedTracks callback) {
+        return mRemoteDataSource.getSuggestedTracks(callback);
+    }
 }

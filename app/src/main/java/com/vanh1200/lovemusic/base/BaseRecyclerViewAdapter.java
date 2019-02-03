@@ -9,11 +9,9 @@ import java.util.List;
 public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
     private List<T> mData;
-    private Context mContext;
     private ItemListener<T> mItemListener;
 
-    public BaseRecyclerViewAdapter(Context context) {
-        mContext = context;
+    public BaseRecyclerViewAdapter() {
         mData = new ArrayList<>();
     }
 

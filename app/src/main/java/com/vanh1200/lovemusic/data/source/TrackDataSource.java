@@ -11,5 +11,6 @@ public class TrackDataSource {
 
     public interface RemoteDataSource {
         List<Track> getTracksByGenre(String genre, TrackRemoteDataSource.OnGetTracksByGenre callback);
+        List<Track> getSuggestedTracks(TrackRemoteDataSource.OnGetSuggestedTracks callback);
     }
 }
