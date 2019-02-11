@@ -24,10 +24,15 @@ public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
         SuggestedTracksAdapter.ViewHolder> {
     private List<Track> mTracks;
     private Context mContext;
+    private OnClickSuggestedTracks mListener;
 
     public SuggestedTracksAdapter(List<Track> tracks) {
         super();
         mTracks = tracks;
+    }
+
+    public void setListener(OnClickSuggestedTracks listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -36,7 +41,7 @@ public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
         mContext = viewGroup.getContext();
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_suggested_track, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mTracks, mListener);
     }
 
     @Override
@@ -46,17 +51,21 @@ public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
 
     @Override
     public int getItemCount() {
-        return mTracks.size();
+        return mTracks == null ? 0 : mTracks.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final int RADIUS_CORNER = 15;
         private ImageView mImageArtwork;
         private TextView mTextTitle;
         private TextView mTextArtist;
+        private OnClickSuggestedTracks mListener;
+        private List<Track> mTracks;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, List<Track> tracks, OnClickSuggestedTracks listener) {
             super(itemView);
+            mListener = listener;
+            mTracks = tracks;
             initViews(itemView);
         }
 
@@ -93,6 +102,24 @@ public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
                 mTextArtist.setText(Constants.UNKNOWN);
             }
             mTextTitle.setText(track.getTitle());
+            mImageArtwork.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.image_suggested_image:
+                    if (mListener != null){
+                        mListener.onClickTracks(mTracks.get(getAdapterPosition()));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public interface OnClickSuggestedTracks {
+        void onClickTracks(Track track);
     }
 }

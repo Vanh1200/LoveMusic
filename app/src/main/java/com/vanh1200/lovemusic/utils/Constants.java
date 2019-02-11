@@ -32,6 +32,7 @@ public final class Constants {
     public static final String KEY_BUNDLE_TITLE = "key_bundle_title";
     public static final String KEY_BUNDLE_IMAGE_URL = "key_bundle_image_url";
     public static final String KEY_BUNDLE_ARTIST = "key_bundle_artist";
+    public static final String KEY_BUNDLE_TRACK = "key_bundle_track";
 
     public static final String IMAGE_LARGE = "large";
     public static final String IMAGE_FULL = "t500x500";

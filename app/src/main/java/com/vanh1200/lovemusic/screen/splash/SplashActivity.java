@@ -21,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(MainActivity.getIntent(SplashActivity.this));
+                finish();
             }
         }, TIME_DELAY_SPLASH);
     }
