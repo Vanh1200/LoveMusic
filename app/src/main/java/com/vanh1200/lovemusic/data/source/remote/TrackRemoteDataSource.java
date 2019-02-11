@@ -25,9 +25,23 @@ public class TrackRemoteDataSource implements TrackDataSource.RemoteDataSource {
     public List<Track> getTracksByGenre(String genre, OnGetTracksByGenre callback) {
         List<Track> tracks = new ArrayList<>();
         if (callback != null) {
-            new FetchTracksAsync(callback).execute(StringUtils.
+            new FetchTracksAsync(callback, null).execute(StringUtils.
                     generateGenreUrl(Constants.KIND_TOP,
-                    genre, Constants.LIMIT_SLIDER, Constants.OFFSET));
+                            genre, Constants.LIMIT_SLIDER,
+                            Constants.OFFSET));
+        }
+        return tracks;
+    }
+
+    @Override
+    public List<Track> getSuggestedTracks(OnGetSuggestedTracks callback) {
+        List<Track> tracks = new ArrayList<>();
+        if (callback != null) {
+            new FetchTracksAsync(null, callback).execute(StringUtils.
+                    generateGenreUrl(Constants.KIND_TREND,
+                            Constants.GENRES_ALL_AUDIO,
+                            Constants.LIMIT_SUGGESTED,
+                            Constants.OFFSET_SUGGESTED));
         }
         return tracks;
     }
@@ -36,5 +50,11 @@ public class TrackRemoteDataSource implements TrackDataSource.RemoteDataSource {
         void onGetTracksSuccess(List<Track> tracks);
 
         void onGetTracksFailed(String error);
+    }
+
+    public interface OnGetSuggestedTracks {
+        void onGetSuggestedTracksSuccess(List<Track> tracks);
+
+        void onGetSuggestedTracksFailed(String error);
     }
 }

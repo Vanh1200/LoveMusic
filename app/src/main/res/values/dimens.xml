@@ -16,4 +16,10 @@
     <dimen name="dp_38">38dp</dimen>
     <dimen name="dp_180">180dp</dimen>
     <dimen name="dp_25">25dp</dimen>
+    <dimen name="dp_150">150dp</dimen>
+    <dimen name="dp_75">75dp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="dp_min">0.5dp</dimen>
+    <dimen name="dp_500">500dp</dimen>
+    <dimen name="dp_250">250dp</dimen>
 </resources>

@@ -5,6 +5,7 @@
     <color name="color_accent">#D81B60</color>
     <color name="color_splash">#73AEC7</color>
     <color name="color_black_transparent">#5E000000</color>
+    <color name="color_dark_black_transparent">#77000000</color>
     <color name="color_blue">#00A6FF</color>
     <color name="color_brown">#9b9b9b</color>
     <color name="color_light_brown">#DBD6D6</color>

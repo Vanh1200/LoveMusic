@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_suggested_image"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_150"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:background="@drawable/bg_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_75"
+        android:background="@drawable/bg_black_transparent_gradient"
+        app:layout_constraintBottom_toBottomOf="@id/image_suggested_image"
+        app:layout_constraintEnd_toEndOf="@id/image_suggested_image"
+        app:layout_constraintStart_toStartOf="@id/image_suggested_image" />
+
+    <View
+        android:id="@+id/view_button_play"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/bg_circle_white"
+        app:layout_constraintBottom_toBottomOf="@id/image_suggested_image"
+        app:layout_constraintEnd_toEndOf="@id/image_suggested_image" />
+
+    <ImageView
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:src="@drawable/ic_play_arrow_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_button_play"
+        app:layout_constraintEnd_toEndOf="@id/view_button_play"
+        app:layout_constraintStart_toStartOf="@id/view_button_play"
+        app:layout_constraintTop_toTopOf="@id/view_button_play" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:maxLines="2"
+        android:text="@string/text_temp_text"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="@id/image_suggested_image"
+        app:layout_constraintStart_toStartOf="@id/image_suggested_image"
+        app:layout_constraintTop_toBottomOf="@id/image_suggested_image" />
+
+    <TextView
+        android:id="@+id/text_artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/text_temp_text"
+        android:textColor="@color/color_gray"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@id/text_title"
+        app:layout_constraintStart_toStartOf="@id/text_title"
+        app:layout_constraintTop_toBottomOf="@id/text_title" />
+
+</android.support.constraint.ConstraintLayout>

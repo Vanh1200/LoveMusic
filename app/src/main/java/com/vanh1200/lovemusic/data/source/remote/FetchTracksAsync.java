@@ -25,10 +25,14 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
     private static final String METHOD_GET = "GET";
     public static final String NOTIFY_FETCH_FAILED = "Get tracks failed!";
     private static final String SYMBOL_NEW_LINE = "\n";
-    private TrackRemoteDataSource.OnGetTracksByGenre mCallback;
+    private TrackRemoteDataSource.OnGetTracksByGenre mCallbackGenre;
+    private TrackRemoteDataSource.OnGetSuggestedTracks mCallbackSuggested;
 
-    public FetchTracksAsync(TrackRemoteDataSource.OnGetTracksByGenre callback) {
-        mCallback = callback;
+
+    public FetchTracksAsync(TrackRemoteDataSource.OnGetTracksByGenre callbackGenre,
+                            TrackRemoteDataSource.OnGetSuggestedTracks callbackSuggested) {
+        mCallbackGenre = callbackGenre;
+        mCallbackSuggested = callbackSuggested;
     }
 
     @Override
@@ -40,12 +44,11 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
             InputStream inputStream = connection.getInputStream();
             return getTracks(inputStream);
         } catch (IOException e) {
-            mCallback.onGetTracksFailed(e.getMessage());
+            return null;
         }
-        return null;
     }
 
-    private List<Track> getTracks(InputStream inputStream) throws IOException {
+    private List<Track> getTracks(InputStream inputStream) {
         List<Track> tracks = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -59,11 +62,10 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObjectTrack = jsonArray.getJSONObject(i).getJSONObject(ApiEntity.TRACK);
                 Track track = new Track();
-                if (!jsonObjectTrack.isNull(TrackEntity.ARTWORK_URL)){
+                if (!jsonObjectTrack.isNull(TrackEntity.ARTWORK_URL)) {
                     track.setArtworkUrl(StringUtils.reformatImageUrl(jsonObjectTrack.
                             getString(TrackEntity.ARTWORK_URL)));
-                }
-                else{
+                } else {
                     track.setArtworkUrl(TrackEntity.ARTWORK_URL);
                 }
                 track.setTitle(jsonObjectTrack.getString(TrackEntity.TITLE));
@@ -72,18 +74,24 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
                 track.setDownloadable(jsonObjectTrack.getBoolean(TrackEntity.DOWNLOADABLE));
                 track.setStreamable(jsonObjectTrack.getBoolean(TrackEntity.STREAMABLE));
                 track.setDuration(jsonObjectTrack.getLong(TrackEntity.DURATION));
-                if (!jsonObjectTrack.isNull(TrackEntity.DESCRIPTION)){
+                if (!jsonObjectTrack.isNull(TrackEntity.DESCRIPTION)) {
                     track.setDescription(jsonObjectTrack.getString(TrackEntity.DESCRIPTION));
                 }
-                track.setPlaybackCount(jsonObjectTrack.getLong(TrackEntity.PLAYBACK_COUNT));
-                track.setLikesCount(jsonObjectTrack.getLong(TrackEntity.LIKES_COUNT));
-                track.setDownloadCount(jsonObjectTrack.getLong(TrackEntity.DOWNLOAD_COUNT));
+                if (!jsonObjectTrack.isNull(TrackEntity.PLAYBACK_COUNT)) {
+                    track.setPlaybackCount(jsonObjectTrack.getLong(TrackEntity.PLAYBACK_COUNT));
+                }
+                if (!jsonObjectTrack.isNull(TrackEntity.LIKES_COUNT)) {
+                    track.setLikesCount(jsonObjectTrack.getLong(TrackEntity.LIKES_COUNT));
+                }
+                if (!jsonObjectTrack.isNull(TrackEntity.DOWNLOAD_COUNT)) {
+                    track.setDownloadCount(jsonObjectTrack.getLong(TrackEntity.DOWNLOAD_COUNT));
+                }
                 if (!jsonObjectTrack.isNull(TrackEntity.PUBLISHER_METADATA)) {
                     Publisher publisher = new Publisher();
-                    JSONObject jsonObjectPublisher = jsonObjectTrack.
-                            getJSONObject(TrackEntity.PUBLISHER_METADATA);
+                    JSONObject jsonObjectPublisher = jsonObjectTrack
+                            .getJSONObject(TrackEntity.PUBLISHER_METADATA);
                     publisher.setId(jsonObjectPublisher.getLong(PublisherEntity.ID));
-                    if (!jsonObjectPublisher.isNull(PublisherEntity.ARTIST)){
+                    if (!jsonObjectPublisher.isNull(PublisherEntity.ARTIST)) {
                         publisher.setArtist(jsonObjectPublisher.getString(PublisherEntity.ARTIST));
                     }
                     track.setPublisher(publisher);
@@ -91,17 +99,27 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
                 tracks.add(track);
             }
         } catch (Exception e) {
-            mCallback.onGetTracksFailed(e.getMessage());
+            return null;
         }
         return tracks;
     }
 
     @Override
     protected void onPostExecute(List<Track> tracks) {
-        if (tracks == null) {
-            mCallback.onGetTracksFailed(NOTIFY_FETCH_FAILED);
+        if (mCallbackGenre != null) {
+            if (tracks == null) {
+                mCallbackGenre.onGetTracksFailed(NOTIFY_FETCH_FAILED);
+                return;
+            }
+            mCallbackGenre.onGetTracksSuccess(tracks);
             return;
         }
-        mCallback.onGetTracksSuccess(tracks);
+        if (mCallbackSuggested != null) {
+            if (tracks == null) {
+                mCallbackSuggested.onGetSuggestedTracksFailed(NOTIFY_FETCH_FAILED);
+                return;
+            }
+            mCallbackSuggested.onGetSuggestedTracksSuccess(tracks);
+        }
     }
 }
