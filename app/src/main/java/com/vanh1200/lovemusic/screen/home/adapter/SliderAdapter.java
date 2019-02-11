@@ -1,14 +1,24 @@
 package com.vanh1200.lovemusic.screen.home.adapter;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.vanh1200.lovemusic.R;
+import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.screen.home.SliderFragment;
+import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.List;
 
-public class SliderAdapter extends FragmentPagerAdapter {
+public class SliderAdapter extends FragmentPagerAdapter{
     public static final int COUNT = 5;
     private static final int FIRST_FRAGMENT = 0;
     private static final int SECOND_FRAGMENT = 1;

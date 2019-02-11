@@ -22,4 +22,10 @@
     <dimen name="dp_min">0.5dp</dimen>
     <dimen name="dp_500">500dp</dimen>
     <dimen name="dp_250">250dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
+    <dimen name="sp_26">26sp</dimen>
+    <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_84">84dp</dimen>
+    <dimen name="dp_320">320dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
 </resources>
