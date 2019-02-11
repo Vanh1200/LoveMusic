@@ -15,7 +15,6 @@ public class SliderAdapter extends FragmentPagerAdapter {
     private static final int THIRD_FRAGMENT = 2;
     private static final int FOURTH_FRAGMENT = 3;
     private static final int FIFTH_FRAGMENT = 4;
-
     private List<SliderFragment> mFragments;
 
     public List<SliderFragment> getFragmentSlider() {
@@ -52,4 +51,5 @@ public class SliderAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return COUNT;
     }
+
 }
