@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.vanh1200.lovemusic.data.model.Publisher;
 import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.utils.ApiEntity;
+import com.vanh1200.lovemusic.utils.Constants;
 import com.vanh1200.lovemusic.utils.PublisherEntity;
 import com.vanh1200.lovemusic.utils.StringUtils;
 import com.vanh1200.lovemusic.utils.TrackEntity;
@@ -86,16 +87,17 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
                 if (!jsonObjectTrack.isNull(TrackEntity.DOWNLOAD_COUNT)) {
                     track.setDownloadCount(jsonObjectTrack.getLong(TrackEntity.DOWNLOAD_COUNT));
                 }
+                Publisher publisher = new Publisher();
+                publisher.setArtist(Constants.UNKNOWN);
                 if (!jsonObjectTrack.isNull(TrackEntity.PUBLISHER_METADATA)) {
-                    Publisher publisher = new Publisher();
                     JSONObject jsonObjectPublisher = jsonObjectTrack
                             .getJSONObject(TrackEntity.PUBLISHER_METADATA);
                     publisher.setId(jsonObjectPublisher.getLong(PublisherEntity.ID));
                     if (!jsonObjectPublisher.isNull(PublisherEntity.ARTIST)) {
                         publisher.setArtist(jsonObjectPublisher.getString(PublisherEntity.ARTIST));
                     }
-                    track.setPublisher(publisher);
                 }
+                track.setPublisher(publisher);
                 tracks.add(track);
             }
         } catch (Exception e) {

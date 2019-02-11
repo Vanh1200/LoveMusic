@@ -2,9 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vanh1200.lovemusic">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/square_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/circle_logo"
@@ -20,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.genre.GenreDetailActivity"/>
+        <activity
+            android:name=".screen.genre.GenreDetailActivity"
+            android:theme="@style/GenreDetailTheme" />
     </application>
 
 </manifest>

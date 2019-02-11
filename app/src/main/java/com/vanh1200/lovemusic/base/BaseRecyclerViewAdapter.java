@@ -24,6 +24,7 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         if (data != null) {
             mData.clear();
             mData.addAll(data);
+            notifyDataSetChanged();
         }
     }
 

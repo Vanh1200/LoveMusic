@@ -3,6 +3,7 @@ package com.vanh1200.lovemusic.screen.home;
 import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.data.repository.TrackRepository;
 import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
+import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.List;
 
@@ -33,7 +34,10 @@ public class HomePresenter implements HomeContract.Presenter,
 
     @Override
     public void initDataForSlider(String genre) {
-        mTrackRepository.getTracksByGenre(genre, this);
+        mTrackRepository.getTracksByGenre(genre,
+                        Constants.LIMIT_SLIDER,
+                        Constants.OFFSET,
+                        this);
     }
 
     @Override
@@ -50,4 +54,5 @@ public class HomePresenter implements HomeContract.Presenter,
     public void onGetSuggestedTracksFailed(String error) {
         mView.onFetchDataForSuggestedFailed(error);
     }
+
 }

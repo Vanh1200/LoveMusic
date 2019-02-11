@@ -27,7 +27,7 @@
                 android:fitsSystemWindows="true">
 
                 <ImageView
-                    android:id="@+id/image_cover"
+                    android:id="@+id/image_genre"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/ambient"
@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/dp_20"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ambient" />
+                        android:src="@drawable/ambient"/>
 
                     <TextView
                         android:id="@+id/text_genre"
@@ -85,20 +85,40 @@
                 android:id="@+id/toolbar_genre_detail"
                 android:layout_width="match_parent"
                 android:layout_height="?android:actionBarSize"
-                android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_20"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_genre_detail"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/dp_20"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_genre_detail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/dp_20"
+            android:visibility="invisible"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_genre_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/button_shuffle"
