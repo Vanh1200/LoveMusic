@@ -21,7 +21,10 @@
         </activity>
         <activity
             android:name=".screen.genre.GenreDetailActivity"
-            android:theme="@style/GenreDetailTheme" />
+            android:theme="@style/TranslucentStatusTheme" />
+        <activity
+            android:name=".screen.play.PlayActivity"
+            android:theme="@style/TranslucentStatusTheme" />
     </application>
 
 </manifest>

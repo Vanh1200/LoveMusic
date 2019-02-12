@@ -1,5 +1,7 @@
 package com.vanh1200.lovemusic.utils;
 
+import java.util.concurrent.TimeUnit;
+
 public class StringUtils {
     public static String generateGenreUrl(String kind, String genre, int limit, int offset) {
         return String.format(
@@ -40,7 +42,15 @@ public class StringUtils {
         return stringBuilder.toString();
     }
 
-    public static String reformatImageUrl(String url){
+    public static String reformatImageUrl(String url) {
         return url.replace(Constants.IMAGE_LARGE, Constants.IMAGE_FULL);
+    }
+
+    public static String convertTimeInMilisToString(long duration) {
+        return String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(duration) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration)),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
     }
 }
