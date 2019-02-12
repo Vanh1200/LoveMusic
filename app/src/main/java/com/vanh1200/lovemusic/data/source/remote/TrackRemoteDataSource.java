@@ -22,13 +22,15 @@ public class TrackRemoteDataSource implements TrackDataSource.RemoteDataSource {
     }
 
     @Override
-    public List<Track> getTracksByGenre(String genre, OnGetTracksByGenre callback) {
+    public List<Track> getTracksByGenre(String genre, int limit, int offset,
+                                        OnGetTracksByGenre callback) {
         List<Track> tracks = new ArrayList<>();
         if (callback != null) {
             new FetchTracksAsync(callback, null).execute(StringUtils.
                     generateGenreUrl(Constants.KIND_TOP,
-                            genre, Constants.LIMIT_SLIDER,
-                            Constants.OFFSET));
+                            genre,
+                            limit,
+                            offset));
         }
         return tracks;
     }

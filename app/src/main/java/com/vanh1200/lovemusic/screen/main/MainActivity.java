@@ -38,7 +38,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             setStatsTextBarColor();
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setStatsTextBarColor() {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -55,7 +54,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     public void hideProgressBar() {
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

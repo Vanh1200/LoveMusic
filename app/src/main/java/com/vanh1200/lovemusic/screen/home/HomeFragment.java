@@ -1,5 +1,6 @@
 package com.vanh1200.lovemusic.screen.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,12 @@ import android.widget.Toast;
 
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseFragment;
+import com.vanh1200.lovemusic.data.model.Genre;
 import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.data.repository.TrackRepository;
 import com.vanh1200.lovemusic.data.source.local.TrackLocalDataSource;
 import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
+import com.vanh1200.lovemusic.screen.genre.GenreDetailActivity;
 import com.vanh1200.lovemusic.screen.home.adapter.SliderAdapter;
 import com.vanh1200.lovemusic.screen.home.adapter.SuggestedTracksAdapter;
 import com.vanh1200.lovemusic.utils.Constants;
@@ -44,7 +47,13 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private TextView mTextSearchTracks;
     private HomePresenter mPresenter;
     private TrackRepository mTrackRepository;
-    List<SliderFragment> mFragments;
+    private List<SliderFragment> mFragments;
+    private Genre mGenreAllMusic;
+    private Genre mGenreAllAudio;
+    private Genre mGenreRock;
+    private Genre mGenreAmbient;
+    private Genre mGenreClassical;
+    private Genre mGenreCountry;
 
     @Override
     protected int getLayoutResource() {
@@ -64,6 +73,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
         mImageClassical = view.findViewById(R.id.image_classical);
         mImageCountry = view.findViewById(R.id.image_country);
         mTextSearchTracks = view.findViewById(R.id.text_search);
+        initGenres();
         initToolbar(view);
         mTrackRepository = TrackRepository.getInstance(TrackLocalDataSource.getInstance(getActivity()),
                 TrackRemoteDataSource.getInstance());
@@ -72,6 +82,21 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
         registerEvents();
         initDataForSlider();
         initDataForSuggestedTracks();
+    }
+
+    private void initGenres() {
+        mGenreAllMusic = new Genre(Constants.GENRES_ALL_MUSIC,
+                getString(R.string.text_all_music), R.drawable.all_music);
+        mGenreAllAudio = new Genre(Constants.GENRES_ALL_AUDIO,
+                getString(R.string.text_all_audio), R.drawable.all_audio);
+        mGenreAmbient = new Genre(Constants.GENRES_AMBIENT,
+                getString(R.string.text_ambient), R.drawable.ambient);
+        mGenreRock = new Genre(Constants.GENRES_ROCK,
+                getString(R.string.text_rock), R.drawable.rock);
+        mGenreClassical = new Genre(Constants.GENRES_CLASSICAL,
+                getString(R.string.text_classical), R.drawable.classical);
+        mGenreCountry = new Genre(Constants.GENRES_COUNTRY,
+                getString(R.string.text_country), R.drawable.country);
     }
 
     private void registerEvents() {
@@ -140,7 +165,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
 
     @Override
     public void onFetchDataForSuggestedFailed(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -158,20 +183,32 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
             case R.id.text_popular_playlist:
                 break;
             case R.id.image_all_music:
+                openGenreDetail(mGenreAllMusic);
                 break;
             case R.id.image_all_audio:
+                openGenreDetail(mGenreAllAudio);
                 break;
             case R.id.image_rock:
+                openGenreDetail(mGenreRock);
                 break;
             case R.id.image_ambient:
+                openGenreDetail(mGenreAmbient);
                 break;
             case R.id.image_classical:
+                openGenreDetail(mGenreClassical);
                 break;
             case R.id.image_country:
+                openGenreDetail(mGenreCountry);
                 break;
             default:
                 break;
         }
+    }
+
+    private void openGenreDetail(Genre genre) {
+        Intent intent = GenreDetailActivity.getIntent(getActivity());
+        intent.putExtra(Constants.KEY_INTENT_GENRE, genre);
+        startActivity(intent);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class TrackRepository implements TrackDataSource.LocalDataSource,
     private TrackRemoteDataSource mRemoteDataSource;
 
     private TrackRepository(TrackLocalDataSource trackLocalDataSource,
-                           TrackRemoteDataSource remoteDataSource) {
+                            TrackRemoteDataSource remoteDataSource) {
         mTrackLocalDataSource = trackLocalDataSource;
         mRemoteDataSource = remoteDataSource;
     }
@@ -28,12 +28,14 @@ public class TrackRepository implements TrackDataSource.LocalDataSource,
     }
 
     @Override
-    public List<Track> getTracksByGenre(String genre, TrackRemoteDataSource.OnGetTracksByGenre callback) {
-        return mRemoteDataSource.getTracksByGenre(genre, callback);
+    public List<Track> getTracksByGenre(String genre, int limit, int offset,
+                                        TrackRemoteDataSource.OnGetTracksByGenre callback) {
+        return mRemoteDataSource.getTracksByGenre(genre, limit, offset, callback);
     }
 
     @Override
     public List<Track> getSuggestedTracks(TrackRemoteDataSource.OnGetSuggestedTracks callback) {
         return mRemoteDataSource.getSuggestedTracks(callback);
     }
+
 }

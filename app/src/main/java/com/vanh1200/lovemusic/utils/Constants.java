@@ -24,17 +24,18 @@ public final class Constants {
     public static final String GENRES_COUNTRY = "soundcloud:genres:country";
 
     public static final int OFFSET = 10;
-    public static final int OFFSET_SUGGESTED = 16;
+    public static final int OFFSET_SUGGESTED = 10;
     public static final int LIMIT = 50;
     public static final int LIMIT_SLIDER = 5;
-    public static final int LIMIT_SUGGESTED = 20;
+    public static final int LIMIT_SUGGESTED = 10;
+    public static final int OFFSET_GENRE = 10;
+    public static final int LIMIT_GENRE = 50;
 
-    public static final String KEY_BUNDLE_TITLE = "key_bundle_title";
-    public static final String KEY_BUNDLE_IMAGE_URL = "key_bundle_image_url";
-    public static final String KEY_BUNDLE_ARTIST = "key_bundle_artist";
     public static final String KEY_BUNDLE_TRACK = "key_bundle_track";
 
     public static final String IMAGE_LARGE = "large";
     public static final String IMAGE_FULL = "t500x500";
     public static final String UNKNOWN = "unknown";
+
+    public static final String KEY_INTENT_GENRE = "key_intent_genre";
 }

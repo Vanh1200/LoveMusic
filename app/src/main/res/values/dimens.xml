@@ -28,4 +28,5 @@
     <dimen name="dp_84">84dp</dimen>
     <dimen name="dp_320">320dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
 </resources>

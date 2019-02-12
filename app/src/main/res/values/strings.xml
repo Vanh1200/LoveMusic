@@ -15,4 +15,5 @@
     <string name="text_popular_playlist">POPULAR PLAYLIST</string>
     <string name="text_suffle">Shuffle</string>
     <string name="text_genre">Genre</string>
+    <string name="text_one">1</string>
 </resources>
