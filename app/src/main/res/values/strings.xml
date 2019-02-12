@@ -16,4 +16,8 @@
     <string name="text_suffle">Shuffle</string>
     <string name="text_genre">Genre</string>
     <string name="text_one">1</string>
+    <string name="text_search">Search</string>
+    <string name="text_add_to_favorite">Add to favorite</string>
+    <string name="text_add_to_playlist">Add to playlist</string>
+    <string name="text_add_to_queue_play_next">Add to queue play next</string>
 </resources>
