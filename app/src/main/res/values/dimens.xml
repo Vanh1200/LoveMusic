@@ -31,4 +31,9 @@
     <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_60">60dp</dimen>
+    <dimen name="dp_22">22dp</dimen>
+    <dimen name="dp_42">42dp</dimen>
+    <dimen name="dp_46">46dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_32">32dp</dimen>
 </resources>

@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/dp_20"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ambient"/>
+                        android:src="@drawable/ambient" />
 
                     <TextView
                         android:id="@+id/text_genre"
