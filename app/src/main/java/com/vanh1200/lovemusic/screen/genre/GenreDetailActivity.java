@@ -26,6 +26,7 @@ import com.vanh1200.lovemusic.data.source.local.TrackLocalDataSource;
 import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
 import com.vanh1200.lovemusic.screen.genre.adapter.GenreTrackAdapter;
 import com.vanh1200.lovemusic.screen.option.OptionDialogFragment;
+import com.vanh1200.lovemusic.screen.play.PlayActivity;
 import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
@@ -161,7 +162,7 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
 
     @Override
     public void onClickTrack(Track track) {
-        Toast.makeText(this, track.getTitle(), Toast.LENGTH_SHORT).show();
+        startActivity(PlayActivity.getIntent(this));
     }
 
     @Override

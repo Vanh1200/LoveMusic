@@ -13,7 +13,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="GenreDetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="TranslucentStatusTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
