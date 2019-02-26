@@ -8,7 +8,7 @@ public final class Constants {
     public static final String BASE_GENRE_URL
             = "https://api-v2.soundcloud.com/charts?kind=%s&genre=%s&client_id=%s&limit=%d&offset=%d";
     public static final String BASE_SEARCH_URL
-            = "http://api.soundcloud.com/tracks?q=%s&client_id=%s";
+            = "http://api.soundcloud.com/tracks?q=%s&client_id=%s&limit=%d&offset=%d";
     public static final String BASE_DOWNLOAD_URL
             = "https://api.soundcloud.com/tracks/%d/download?client_id=%s";
     public static final String BASE_STREAM_URL
@@ -23,13 +23,9 @@ public final class Constants {
     public static final String GENRES_CLASSICAL = "soundcloud:genres:classical";
     public static final String GENRES_COUNTRY = "soundcloud:genres:country";
 
-    public static final int OFFSET = 10;
-    public static final int OFFSET_SUGGESTED = 10;
+    public static final int OFFSET = 0;
     public static final int LIMIT = 50;
     public static final int LIMIT_SLIDER = 5;
-    public static final int LIMIT_SUGGESTED = 10;
-    public static final int OFFSET_GENRE = 10;
-    public static final int LIMIT_GENRE = 50;
 
     public static final String KEY_BUNDLE_TRACK = "key_bundle_track";
 
@@ -38,4 +34,11 @@ public final class Constants {
     public static final String UNKNOWN = "unknown";
 
     public static final String KEY_INTENT_GENRE = "key_intent_genre";
+
+    public static final String ACTION_PLAY_AND_PAUSE = "com.vanh1200.lovemusic.ACTION_PLAY_AND_PAUSE";
+    public static final String ACTION_NEXT = "com.vanh1200.lovemusic.ACTION_NEXT";
+    public static final String ACTION_PREVIOUS = "com.vanh1200.lovemusic.ACTION_PREVIOUS";
+    public static final String ACTION_CLOSE = "com.vanh1200.lovemusic.ACTION_CLOSE";
+    public static final int DEFAULT_NOTIFY_SIZE = 100;
+    public static final String KEY_TIMER = "key_timer";
 }

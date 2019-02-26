@@ -18,7 +18,7 @@ public class PlayAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        switch (i){
+        switch (i) {
             case FRAGMENT_PLAYING_LIST:
                 return PlayingListFragment.getInstance();
             case FRAGMENT_PLAY_MUSIC:

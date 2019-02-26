@@ -23,4 +23,8 @@
     <string name="text_temp_time">00:00</string>
     <string name="text_playing_list">Playing List</string>
     <string name="text_number_in_brackets">(40)</string>
+    <string name="text_previous">previous</string>
+    <string name="text_play">play</string>
+    <string name="text_next">next</string>
+    <string name="chanel_id">love music</string>
 </resources>
