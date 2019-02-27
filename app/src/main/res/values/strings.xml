@@ -39,4 +39,5 @@
     <string name="text_favorite">Favorite</string>
     <string name="text_download">Download</string>
     <string name="default_time">0</string>
+    <string name="animation_rotation">rotation</string>
 </resources>
