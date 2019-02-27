@@ -13,11 +13,13 @@ public class StringUtils {
                 offset);
     }
 
-    public static String generateSearchUrl(String query) {
+    public static String generateSearchUrl(String query, int limit, int offset) {
         return String.format(
                 Constants.BASE_SEARCH_URL,
                 query,
-                Constants.CLIENT_ID);
+                Constants.CLIENT_ID,
+                limit,
+                offset);
     }
 
     public static String generateDownloadUrl(long trackId) {
