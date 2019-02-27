@@ -41,9 +41,20 @@ public class TrackRemoteDataSource implements TrackDataSource.RemoteDataSource {
         if (callback != null) {
             new FetchTracksAsync(null, callback).execute(StringUtils.
                     generateGenreUrl(Constants.KIND_TREND,
-                            Constants.GENRES_ALL_AUDIO,
-                            Constants.LIMIT_SUGGESTED,
-                            Constants.OFFSET_SUGGESTED));
+                            Constants.GENRES_ALL_MUSIC,
+                            Constants.LIMIT,
+                            Constants.OFFSET));
+        }
+        return tracks;
+    }
+
+    @Override
+    public List<Track> getTracksByQuery(String query, int limit, int offset,
+                                        OnGetTracksByQuery callback) {
+        List<Track> tracks = new ArrayList<>();
+        if (callback != null) {
+            new SearchTracksAsync(callback)
+                    .execute(StringUtils.generateSearchUrl(query, limit, offset));
         }
         return tracks;
     }
@@ -58,5 +69,11 @@ public class TrackRemoteDataSource implements TrackDataSource.RemoteDataSource {
         void onGetSuggestedTracksSuccess(List<Track> tracks);
 
         void onGetSuggestedTracksFailed(String error);
+    }
+
+    public interface OnGetTracksByQuery {
+        void onGetTracksSuccess(List<Track> tracks);
+
+        void onGetTracksFailed(String error);
     }
 }

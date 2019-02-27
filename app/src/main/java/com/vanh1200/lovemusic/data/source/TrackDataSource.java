@@ -14,5 +14,8 @@ public class TrackDataSource {
                                      TrackRemoteDataSource.OnGetTracksByGenre callback);
 
         List<Track> getSuggestedTracks(TrackRemoteDataSource.OnGetSuggestedTracks callback);
+
+        List<Track> getTracksByQuery(String query, int limit, int offset,
+                                     TrackRemoteDataSource.OnGetTracksByQuery callback);
     }
 }
