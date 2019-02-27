@@ -23,8 +23,20 @@
     <string name="text_temp_time">00:00</string>
     <string name="text_playing_list">Playing List</string>
     <string name="text_number_in_brackets">(40)</string>
-    <string name="text_previous">previous</string>
-    <string name="text_play">play</string>
-    <string name="text_next">next</string>
-    <string name="chanel_id">love music</string>
+    <string name="notify_play_track_error">Play track failed</string>
+    <string name="text_done">Done</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_input_minute">Input minutes</string>
+    <string name="text_set_time">Set time</string>
+    <string name="text_minutes">minutes</string>
+    <string name="text_notify_timer">Music goes off after</string>
+    <string name="text_history">HISTORY</string>
+    <string name="text_result">RESULT</string>
+    <string name="mess_search_error">Search failed</string>
+    <string name="text_my_songs">My songs</string>
+    <string name="text_zero">0</string>
+    <string name="text_playlist">Playlist</string>
+    <string name="text_favorite">Favorite</string>
+    <string name="text_download">Download</string>
+    <string name="default_time">0</string>
 </resources>
