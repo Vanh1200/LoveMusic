@@ -18,6 +18,7 @@ import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.screen.play.adapter.PlayAdapter;
 import com.vanh1200.lovemusic.service.PlayMusicListener;
 import com.vanh1200.lovemusic.service.PlayMusicService;
+import com.vanh1200.lovemusic.utils.BlurTransformation;
 import com.vanh1200.lovemusic.utils.TrackEntity;
 
 public class PlayActivity extends BaseActivity implements PlayMusicListener {
@@ -103,7 +104,7 @@ public class PlayActivity extends BaseActivity implements PlayMusicListener {
     @Override
     protected void initViews(Bundle saveInstanceState) {
         mViewPagerPlay = findViewById(R.id.view_pager_play);
-        mImageBackground = findViewById(R.id.image_background);
+        mImageBackground = findViewById(R.id.image_back_ground);
         mImageDarkCover = findViewById(R.id.image_dark_cover);
         initServiceConnection();
     }

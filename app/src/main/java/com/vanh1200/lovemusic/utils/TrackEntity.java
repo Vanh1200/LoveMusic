@@ -20,7 +20,7 @@ public @interface TrackEntity {
     String ARTWORK_URL = "artwork_url";
     String DESCRIPTION = "description";
     String DOWNLOADABLE = "downloadable";
-    String DURATION = "full_duration";
+    String DURATION = "duration";
     String GENRE = "genre";
     String ID = "id";
     String TITLE = "title";

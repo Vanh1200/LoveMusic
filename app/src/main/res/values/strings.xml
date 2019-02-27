@@ -39,5 +39,10 @@
     <string name="text_favorite">Favorite</string>
     <string name="text_download">Download</string>
     <string name="default_time">0</string>
+    <string name="text_play">play</string>
+    <string name="text_pause">pause</string>
+    <string name="text_next">next</string>
+    <string name="text_previous">previous</string>
+    <string name="chanel_id">Love music</string>
     <string name="animation_rotation">rotation</string>
 </resources>

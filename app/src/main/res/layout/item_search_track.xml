@@ -10,7 +10,6 @@
         android:id="@+id/image_artwork"
         android:layout_width="@dimen/dp_50"
         android:layout_height="@dimen/dp_50"
-        android:layout_marginStart="@dimen/dp_10"
         android:scaleType="centerCrop"
         android:text="@string/text_one"
         android:textColor="@android:color/black"
