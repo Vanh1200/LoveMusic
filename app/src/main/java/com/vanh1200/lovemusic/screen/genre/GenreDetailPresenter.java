@@ -19,8 +19,8 @@ public class GenreDetailPresenter implements GenreDetailContract.Presenter,
     @Override
     public void fetchTracksByGenre(String genre) {
         mTrackRepository.getTracksByGenre(genre,
-                Constants.LIMIT_GENRE,
-                Constants.OFFSET_GENRE,
+                Constants.LIMIT,
+                Constants.OFFSET,
                 this);
     }
 

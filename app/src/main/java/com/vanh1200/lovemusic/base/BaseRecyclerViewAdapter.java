@@ -8,8 +8,8 @@ import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
-    private List<T> mData;
-    private ItemListener<T> mItemListener;
+    protected List<T> mData;
+    protected ItemListener<T> mItemListener;
 
     public BaseRecyclerViewAdapter() {
         mData = new ArrayList<>();
@@ -44,6 +44,7 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
 
     public interface ItemListener<T> {
         void onItemClicked(T t, int position);
+        void onItemLongClicked(T t, int position);
     }
 
 }

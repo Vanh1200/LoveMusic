@@ -103,6 +103,7 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingTop="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_50"
             android:visibility="invisible"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -137,5 +138,13 @@
         android:translationZ="0dp"
         app:layout_anchor="@id/app_bar_genre"
         app:layout_anchorGravity="bottom|center_horizontal" />
+
+    <FrameLayout
+        android:id="@+id/frame_mini_play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_anchorGravity="bottom"
+        app:layout_anchor="@id/recycler_genre_detail"/>
 
 </android.support.design.widget.CoordinatorLayout>

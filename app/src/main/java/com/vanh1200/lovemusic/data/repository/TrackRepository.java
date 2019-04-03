@@ -38,4 +38,9 @@ public class TrackRepository implements TrackDataSource.LocalDataSource,
         return mRemoteDataSource.getSuggestedTracks(callback);
     }
 
+    @Override
+    public List<Track> getTracksByQuery(String query, int limit, int offset, TrackRemoteDataSource.OnGetTracksByQuery callback) {
+        return mRemoteDataSource.getTracksByQuery(query, limit, offset, callback);
+    }
+
 }

@@ -1,8 +1,11 @@
 package com.vanh1200.lovemusic.screen.genre;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,14 +29,18 @@ import com.vanh1200.lovemusic.data.repository.TrackRepository;
 import com.vanh1200.lovemusic.data.source.local.TrackLocalDataSource;
 import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
 import com.vanh1200.lovemusic.screen.genre.adapter.GenreTrackAdapter;
+import com.vanh1200.lovemusic.screen.miniplayer.MiniPlayerFragment;
 import com.vanh1200.lovemusic.screen.option.OptionDialogFragment;
 import com.vanh1200.lovemusic.screen.play.PlayActivity;
+import com.vanh1200.lovemusic.screen.search.SearchActivity;
+import com.vanh1200.lovemusic.service.PlayMusicService;
 import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreDetailActivity extends BaseActivity implements GenreDetailContract.View, GenreTrackAdapter.OnClickTrackListener, View.OnClickListener {
+public class GenreDetailActivity extends BaseActivity implements GenreDetailContract.View,
+        GenreTrackAdapter.OnClickTrackListener, View.OnClickListener {
     private static final String NOTIFICATION_FETCH_TRACKS_FAILED = "get tracks failed";
     private RecyclerView mRecyclerTrack;
     private TextView mTextGenre;
@@ -47,6 +55,9 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
     private Toolbar mToolbar;
     private AppBarLayout mAppBarGenre;
     private LinearLayout mLinearGenre;
+    private PlayMusicService mService;
+    private ServiceConnection mConnection;
+    private FrameLayout mFrameMiniPlay;
 
     @Override
     protected int getLayoutResource() {
@@ -64,6 +75,7 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
         mAppBarGenre = findViewById(R.id.app_bar_genre);
         mLinearGenre = findViewById(R.id.linear_genre_info);
         mProgressBarGenreDetail = findViewById(R.id.progress_bar_genre_detail);
+        mFrameMiniPlay = findViewById(R.id.frame_mini_play);
         mTrackRepository = TrackRepository
                 .getInstance(TrackLocalDataSource.getInstance(this),
                         TrackRemoteDataSource.getInstance());
@@ -71,7 +83,34 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
         mPresenter.setView(this);
         getIncomingIntent();
         initToolbar();
+        initServiceConnection();
         registerEvents();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeServiceConnection();
+        super.onDestroy();
+    }
+
+    private void initServiceConnection() {
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mService = ((PlayMusicService.PlayBinder) service).getService();
+                showMiniPlayer();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(PlayMusicService.getIntent(this), mConnection, BIND_AUTO_CREATE);
+    }
+
+    private void removeServiceConnection(){
+        unbindService(mConnection);
     }
 
     private void registerEvents() {
@@ -124,11 +163,16 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
                 onBackPressed();
                 break;
             case R.id.menu_search:
+                handleClickSearch();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleClickSearch() {
+        startActivity(SearchActivity.getIntent(this));
     }
 
     private void fetchTracksForGenre(String genre) {
@@ -162,6 +206,10 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
 
     @Override
     public void onClickTrack(Track track) {
+        mService.addTrack(track);
+        mService.addTracks(mTracks);
+        mService.changeTrack(track);
+        showMiniPlayer();
         startActivity(PlayActivity.getIntent(this));
     }
 
@@ -182,6 +230,16 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
                 break;
             default:
                 break;
+        }
+    }
+
+    public void showMiniPlayer() {
+        if (mService.getCurrentTrack() != null && mFrameMiniPlay.getVisibility() == View.GONE) {
+            mFrameMiniPlay.setVisibility(View.VISIBLE);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_mini_play, MiniPlayerFragment.newInstance())
+                    .commitAllowingStateLoss();
         }
     }
 }
