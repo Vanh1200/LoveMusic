@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -64,6 +65,7 @@ public class PlayMusicFragment extends BaseFragment implements
     private PlayMusicService mService;
     private ObjectAnimator mObjectAnimator;
     private Handler mHandlerSyncTime;
+    private ProgressBar mProgressLoading;
 
     public PlayMusicFragment() {
     }
@@ -91,6 +93,7 @@ public class PlayMusicFragment extends BaseFragment implements
         mImageLoop = view.findViewById(R.id.image_loop);
         mSeekBarPlay = view.findViewById(R.id.seek_bar_play_music);
         mImageArtwork = view.findViewById(R.id.image_artwork);
+        mProgressLoading = view.findViewById(R.id.progress_loading);
         registerEvents();
         initRotateAnimator();
     }
@@ -126,7 +129,23 @@ public class PlayMusicFragment extends BaseFragment implements
         updateTrackInformation(mService.getCurrentTrack());
         updateLoopMusicSetting();
         updateShuffleMusicSetting();
+        updateStateMediaPlayer();
         initHandlerSyncTime();
+    }
+
+    private void updateStateMediaPlayer() {
+        if (mService.getMediaPlayerState() == MediaPlayerStateType.PREPARE) {
+            mImagePlay.setVisibility(View.INVISIBLE);
+            mProgressLoading.setVisibility(View.VISIBLE);
+        } else if (mService.getMediaPlayerState() == MediaPlayerStateType.PAUSE) {
+            mImagePlay.setVisibility(View.VISIBLE);
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setImageResource(R.drawable.ic_play);
+        } else {
+            mImagePlay.setVisibility(View.VISIBLE);
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setImageResource(R.drawable.ic_pause);
+        }
     }
 
     private void updateLoopMusicSetting() {
@@ -277,9 +296,11 @@ public class PlayMusicFragment extends BaseFragment implements
             mService.startTrack();
             mImagePlay.setImageResource(R.drawable.ic_pause);
             mObjectAnimator.resume();
-        } else {
+        } else if(mService.getMediaPlayerState() == MediaPlayerStateType.PLAY){
             mService.pauseTrack();
             mImagePlay.setImageResource(R.drawable.ic_play);
+            mObjectAnimator.pause();
+        } else {
             mObjectAnimator.pause();
         }
     }
@@ -289,8 +310,12 @@ public class PlayMusicFragment extends BaseFragment implements
         mTextTitle.setText(track.getTitle());
         mTextArtist.setText(track.getPublisher().getArtist());
         mTextCurrentDuration.setText(getActivity().getString(R.string.text_temp_time));
-        mSeekBarPlay.setProgress(DEFAULT_PROGRESS);
         mSeekBarPlay.setMax((int) track.getDuration());
+        mSeekBarPlay.setProgress(DEFAULT_PROGRESS);
+        if (mService != null) {
+            mSeekBarPlay.setProgress((int) mService.getCurrentDuration());
+            mTextCurrentDuration.setText(StringUtils.convertTimeInMilisToString(mService.getCurrentDuration()));
+        }
         if (!mObjectAnimator.isStarted()) mObjectAnimator.start();
         if (mService.getMediaPlayerState() == MediaPlayerStateType.PLAY) {
             mObjectAnimator.resume();
@@ -316,10 +341,18 @@ public class PlayMusicFragment extends BaseFragment implements
     @Override
     public void onPlayingStateListener(int state) {
         if (!mObjectAnimator.isStarted()) mObjectAnimator.start();
-        if (state == MediaPlayerStateType.PAUSE) {
+        if (state == MediaPlayerStateType.PREPARE) {
+            mImagePlay.setVisibility(View.INVISIBLE);
+            mProgressLoading.setVisibility(View.VISIBLE);
+
+        } else if (state == MediaPlayerStateType.PAUSE) {
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_play);
             mObjectAnimator.pause();
         } else {
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_pause);
             mObjectAnimator.resume();
         }

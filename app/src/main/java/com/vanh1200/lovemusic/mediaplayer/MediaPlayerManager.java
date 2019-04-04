@@ -88,6 +88,7 @@ public class MediaPlayerManager extends MediaPlayerSetting
         mMediaPlayer.setOnCompletionListener(mService);
         mMediaPlayer.setOnPreparedListener(mService);
         mMediaPlayer.prepareAsync();
+        setState(MediaPlayerStateType.PREPARE);
     }
 
     @Override
@@ -98,9 +99,8 @@ public class MediaPlayerManager extends MediaPlayerSetting
 
     @Override
     public void changeTrack(Track track) {
-        setState(MediaPlayerStateType.PAUSE);
         mCurrentTrack = track;
-        create(track);
+        create(track); //firstly fall into preparing state then playing state
     }
 
     @Override

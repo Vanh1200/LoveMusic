@@ -6,9 +6,9 @@
 
     <ImageView
         android:id="@+id/image_playing_track"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginStart="@dimen/dp_10"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_5"
         android:padding="@dimen/dp_5"
         android:src="@drawable/gif_playing"
         android:visibility="invisible"

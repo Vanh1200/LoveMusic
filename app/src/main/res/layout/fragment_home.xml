@@ -85,4 +85,17 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+    <View
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"/>
+
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/color_blue"/>
+
 </android.support.design.widget.CoordinatorLayout>

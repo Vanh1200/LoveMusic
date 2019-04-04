@@ -39,6 +39,7 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
     private PlayMusicService mService;
     private ServiceConnection mConnection;
     private Handler mHandler;
+    private ProgressBar mProgressLoading;
 
     @Override
     protected int getLayoutResource() {
@@ -54,6 +55,7 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
         mImagePlay = view.findViewById(R.id.image_play);
         mImageNext = view.findViewById(R.id.image_next);
         mProgressBarMiniPlay = view.findViewById(R.id.progress_bar_mini_play);
+        mProgressLoading = view.findViewById(R.id.progress_loading);
         initRotateAnimator();
         registerEvents(view);
     }
@@ -80,6 +82,7 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
                 mProgressBarMiniPlay.setMax((int) mService.getCurrentTrack().getDuration());
                 initHandlerUpdateTime();
                 showTrackInformation(mService.getCurrentTrack());
+                initCurrentState();
             }
 
             @Override
@@ -89,6 +92,21 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
         };
         getActivity().bindService(PlayMusicService.getIntent(getActivity()), mConnection,
                 Context.BIND_AUTO_CREATE);
+    }
+
+    private void initCurrentState() {
+        if(mService.getMediaPlayerState() == MediaPlayerStateType.PREPARE){
+            mImagePlay.setVisibility(View.INVISIBLE);
+            mProgressLoading.setVisibility(View.VISIBLE);
+        } else if (mService.getMediaPlayerState() == MediaPlayerStateType.PAUSE){
+            mImagePlay.setVisibility(View.VISIBLE);
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setImageResource(R.drawable.ic_notify_play);
+        } else {
+            mImagePlay.setVisibility(View.VISIBLE);
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setImageResource(R.drawable.ic_notify_pause);
+        }
     }
 
     private void initHandlerUpdateTime() {
@@ -201,10 +219,18 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onPlayingStateListener(int state) {
         if (!mObjectAnimator.isStarted()) mObjectAnimator.start();
-        if (state == MediaPlayerStateType.PAUSE) {
+        if (state == MediaPlayerStateType.PREPARE) {
+            mImagePlay.setVisibility(View.INVISIBLE);
+            mProgressLoading.setVisibility(View.VISIBLE);
+
+        } else if (state == MediaPlayerStateType.PAUSE) {
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_notify_play);
             mObjectAnimator.pause();
         } else {
+            mProgressLoading.setVisibility(View.INVISIBLE);
+            mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_notify_pause);
             mObjectAnimator.resume();
         }

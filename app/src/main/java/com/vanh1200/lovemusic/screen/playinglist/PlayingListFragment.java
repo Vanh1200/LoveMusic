@@ -2,6 +2,7 @@ package com.vanh1200.lovemusic.screen.playinglist;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +11,9 @@ import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseFragment;
 import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.screen.play.PlayActivity;
+import com.vanh1200.lovemusic.screen.playinglist.adapter.ItemTouchListener;
 import com.vanh1200.lovemusic.screen.playinglist.adapter.PlayingTrackAdapter;
+import com.vanh1200.lovemusic.screen.playinglist.adapter.SimpleItemTouchHelperCallback;
 import com.vanh1200.lovemusic.service.PlayMusicListener;
 import com.vanh1200.lovemusic.service.PlayMusicService;
 import com.vanh1200.lovemusic.utils.StringUtils;
@@ -19,7 +22,7 @@ import java.util.List;
 
 public class PlayingListFragment extends BaseFragment
         implements PlayingListContract.View,
-        PlayingTrackAdapter.OnClickTrackListener,
+        PlayingTrackAdapter.OnTrackListener,
         View.OnClickListener, PlayMusicListener {
     private static final String OPEN_BRACKET = "(";
     private static final String CLOSE_BRACKET = ")";
@@ -31,6 +34,7 @@ public class PlayingListFragment extends BaseFragment
     private PlayingTrackAdapter mTrackAdapter;
     private ImageView mImageDown;
     private TextView mTextCount;
+    private ItemTouchHelper mItemTouchHelper;
 
     public PlayingListFragment() {
     }
@@ -55,7 +59,6 @@ public class PlayingListFragment extends BaseFragment
 
     private void getPlayMusicService() {
         mService = ((PlayActivity) getActivity()).getService();
-        mService.addPlayMusicListener(this);
         mTracks = mService.getTracks();
         mCurrentTrack = mService.getCurrentTrack();
         showPlayingList(mTracks);
@@ -81,14 +84,38 @@ public class PlayingListFragment extends BaseFragment
     @Override
     public void showPlayingList(List<Track> tracks) {
         mTrackAdapter = new PlayingTrackAdapter(tracks, mCurrentTrack, this);
-        mRecyclerPlayingList.setAdapter(mTrackAdapter);
+        addItemTouchListener();
         mTextCount.setText(StringUtils.merge(OPEN_BRACKET,
                 String.valueOf(tracks.size()), CLOSE_BRACKET));
+    }
+
+    private void addItemTouchListener() {
+        mRecyclerPlayingList.setAdapter(mTrackAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(new ItemTouchListener() {
+            @Override
+            public void onMove(int oldPosition, int newPosition) {
+                mTrackAdapter.onMove(oldPosition, newPosition);
+            }
+
+            @Override
+            public void swipe(int position, int direction) {
+                mTrackAdapter.swipe(position, direction);
+            }
+        });
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerPlayingList);
     }
 
     @Override
     public void onClickTrack(Track track) {
         mService.changeTrack(track);
+        mTrackAdapter.setCurrentTrack(mService.getCurrentTrack());
+        mTrackAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder holder) {
+        mItemTouchHelper.startDrag(holder);
     }
 
     @Override

@@ -12,9 +12,13 @@ public class HomePresenter implements HomeContract.Presenter,
         TrackRemoteDataSource.OnGetSuggestedTracks {
     private HomeContract.View mView;
     private TrackRepository mTrackRepository;
+    private boolean isSlidesLoaded;
+    private boolean isSuggestionLoaded;
 
     public HomePresenter(TrackRepository trackRepository) {
         mTrackRepository = trackRepository;
+        isSlidesLoaded = false;
+        isSuggestionLoaded = false;
     }
 
     @Override
@@ -24,7 +28,9 @@ public class HomePresenter implements HomeContract.Presenter,
 
     @Override
     public void onGetTracksSuccess(List<Track> tracks) {
+        isSuggestionLoaded = true;
         mView.onFetchDataForSliderSuccess(tracks);
+        mView.onFetchDataComplete(isSlidesLoaded && isSuggestionLoaded);
     }
 
     @Override
@@ -35,9 +41,11 @@ public class HomePresenter implements HomeContract.Presenter,
     @Override
     public void initDataForSlider(String genre) {
         mTrackRepository.getTracksByGenre(genre,
-                        Constants.LIMIT_SLIDER,
+                        10,
                         Constants.OFFSET,
                         this);
+        isSlidesLoaded = true;
+        mView.onFetchDataComplete(isSlidesLoaded && isSuggestionLoaded);
     }
 
     @Override

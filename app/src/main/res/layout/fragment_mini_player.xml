@@ -88,7 +88,18 @@
         app:layout_constraintBottom_toBottomOf="@id/view_bottom"
         app:layout_constraintEnd_toStartOf="@id/image_next"
         app:layout_constraintStart_toEndOf="@id/image_previous"
-        app:layout_constraintTop_toTopOf="@id/view_bottom" />
+        app:layout_constraintTop_toTopOf="@id/view_bottom"
+        android:visibility="invisible"/>
+
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        app:layout_constraintStart_toStartOf="@id/image_play"
+        app:layout_constraintEnd_toEndOf="@id/image_play"
+        app:layout_constraintTop_toTopOf="@id/image_play"
+        app:layout_constraintBottom_toBottomOf="@id/image_play"
+        android:indeterminateTint="@android:color/black" />
 
     <ImageView
         android:id="@+id/image_next"

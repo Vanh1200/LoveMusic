@@ -119,7 +119,7 @@ public class PlayMusicService extends Service
     private void playAndPauseTrack() {
         if (getMediaPlayerState() == MediaPlayerStateType.PAUSE) {
             startTrack();
-        } else {
+        } else if (getMediaPlayerState() == MediaPlayerStateType.PLAY){
             pauseTrack();
         }
         notifyStateChange();

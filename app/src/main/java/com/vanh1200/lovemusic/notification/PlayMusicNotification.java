@@ -144,7 +144,7 @@ public class PlayMusicNotification {
                     .addAction(R.drawable.ic_notify_previous,
                             mService.getString(R.string.text_previous),
                             getPendingIntentPrevious())
-                    .addAction(R.drawable.ic_notify_play, mService.getString(R.string.text_play),
+                    .addAction(R.drawable.ic_notify_pause, mService.getString(R.string.text_pause),
                             getPendingIntentPlay())
                     .addAction(R.drawable.ic_notify_next, mService.getString(R.string.text_next),
                             getPendingIntentNext())

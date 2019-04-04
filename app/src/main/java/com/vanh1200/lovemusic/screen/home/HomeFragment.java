@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private ServiceConnection mConnection;
     private List<Track> mSuggestedTracks;
     private List<Track> mSliderTracks;
+    private ProgressBar mProgressLoading;
+    private View mViewBackground;
 
     @Override
     protected int getLayoutResource() {
@@ -86,6 +89,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
         mImageClassical = view.findViewById(R.id.image_classical);
         mImageCountry = view.findViewById(R.id.image_country);
         mTextSearchTracks = view.findViewById(R.id.text_search);
+        mViewBackground = view.findViewById(R.id.view_background);
+        mProgressLoading = view.findViewById(R.id.progress_loading);
         initGenres();
         initToolbar(view);
         mTrackRepository = TrackRepository.getInstance(TrackLocalDataSource.getInstance(getActivity()),
@@ -223,6 +228,14 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     @Override
     public void onFetchDataForSuggestedFailed(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFetchDataComplete(boolean isAllLoaded) {
+        if(isAllLoaded){
+            mViewBackground.setVisibility(View.INVISIBLE);
+            mProgressLoading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 public class BlurTransformation extends BitmapTransformation {
-    private static float BITMAP_SCALE = 0.5f;
+    private static float BITMAP_SCALE = 0.2f;
     private static float BLUR_RADIUS = 25f;
     private RenderScript rs;
 
