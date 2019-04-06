@@ -15,6 +15,8 @@ public interface HomeContract {
         void onFetchDataForSuggestedSuccess(List<Track> tracks);
 
         void onFetchDataForSuggestedFailed(String error);
+
+        void onFetchDataComplete(boolean isAllLoaded);
     }
 
     interface Presenter extends BasePresenter<View> {

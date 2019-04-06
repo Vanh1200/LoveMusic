@@ -4,14 +4,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.rd.PageIndicatorView;
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseActivity;
 import com.vanh1200.lovemusic.data.model.Track;
@@ -29,6 +34,7 @@ public class PlayActivity extends BaseActivity implements PlayMusicListener {
     private PlayAdapter mPlayAdapter;
     private ServiceConnection mConnection;
     private PlayMusicService mService;
+    private PageIndicatorView mPageIndicatorView;
 
     @Override
     protected int getLayoutResource() {
@@ -106,7 +112,36 @@ public class PlayActivity extends BaseActivity implements PlayMusicListener {
         mViewPagerPlay = findViewById(R.id.view_pager_play);
         mImageBackground = findViewById(R.id.image_back_ground);
         mImageDarkCover = findViewById(R.id.image_dark_cover);
+        mPageIndicatorView = findViewById(R.id.page_indicator_view);
+        setMarginStatusBar();
         initServiceConnection();
+    }
+
+    private void setMarginStatusBar() {
+        //status bar height
+        int statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+
+        // action bar height
+        int actionBarHeight = 0;
+        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(
+                new int[] { android.R.attr.actionBarSize }
+        );
+        actionBarHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        setMargins(mPageIndicatorView, 0, statusBarHeight + actionBarHeight, 0, 0);
+    }
+
+    private void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 
     private void initViewPager() {

@@ -104,7 +104,6 @@
             android:clipToPadding="false"
             android:paddingTop="@dimen/dp_20"
             android:paddingBottom="@dimen/dp_50"
-            android:visibility="invisible"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

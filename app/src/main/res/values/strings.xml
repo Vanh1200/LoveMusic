@@ -28,8 +28,8 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_input_minute">Input minutes</string>
     <string name="text_set_time">Set time</string>
-    <string name="text_minutes">minutes</string>
-    <string name="text_notify_timer">Music goes off after</string>
+    <string name="text_minutes">minute(s)</string>
+    <string name="text_notify_timer">Music goes off after </string>
     <string name="text_history">HISTORY</string>
     <string name="text_result">RESULT</string>
     <string name="mess_search_error">Search failed</string>
