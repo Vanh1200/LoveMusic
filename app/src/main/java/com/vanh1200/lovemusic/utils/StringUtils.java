@@ -1,5 +1,6 @@
 package com.vanh1200.lovemusic.utils;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class StringUtils {
@@ -46,6 +47,10 @@ public class StringUtils {
 
     public static String reformatImageUrl(String url) {
         return url.replace(Constants.IMAGE_LARGE, Constants.IMAGE_FULL);
+    }
+
+    public static String formatTrackFileName(String name){
+        return String.format(Locale.US,"%s.mp3", name);
     }
 
     public static String convertTimeInMilisToString(long duration) {
