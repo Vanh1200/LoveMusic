@@ -41,7 +41,6 @@
         android:id="@+id/page_indicator_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,6 +52,6 @@
         app:piv_unselectedColor="@color/color_white"
         app:piv_viewPager="@id/view_pager_play"
         attrs:piv_padding="12dp"
-        attrs:piv_radius="6dp" />
+        attrs:piv_radius="6dp"/>
 
 </android.support.constraint.ConstraintLayout>

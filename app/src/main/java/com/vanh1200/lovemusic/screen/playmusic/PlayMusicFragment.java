@@ -1,9 +1,13 @@
 package com.vanh1200.lovemusic.screen.playmusic;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -11,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseFragment;
 import com.vanh1200.lovemusic.data.model.Track;
+import com.vanh1200.lovemusic.download.TrackDownloadManager;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerLoopType;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerShuffleType;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerStateType;
@@ -40,10 +46,10 @@ public class PlayMusicFragment extends BaseFragment implements
     private static final String ANIMATION_TYPE = "rotation";
     private static final float FROM_DEGREE = 0;
     private static final float TO_DEGREE = 360;
-    private static final int DEFAULT_PROGRESS = 0;
     private static final int REQUEST_FRAGMENT_TIMER = 1;
     private static final String SHARE_TYPE = "text/plain";
     private static final long TIME_ROTATE = 15000;
+    private static final int REQUEST_PERMISSION_CODE = 0;
     private static PlayMusicFragment sInstance;
     private Track mCurrentTrack;
     private TextView mTextTitle;
@@ -66,6 +72,9 @@ public class PlayMusicFragment extends BaseFragment implements
     private ObjectAnimator mObjectAnimator;
     private Handler mHandlerSyncTime;
     private ProgressBar mProgressLoading;
+    private static String[] sPermission = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public PlayMusicFragment() {
     }
@@ -214,6 +223,7 @@ public class PlayMusicFragment extends BaseFragment implements
             case R.id.image_favorite:
                 break;
             case R.id.image_download:
+                handleDownload();
                 break;
             case R.id.image_share:
                 handleShare();
@@ -236,6 +246,36 @@ public class PlayMusicFragment extends BaseFragment implements
             default:
                 break;
         }
+    }
+
+    private void handleDownload() {
+        if (checkPermission()) {
+            TrackDownloadManager.getInstance(getActivity()).downloadTrack(mService.getCurrentTrack());
+            Toast.makeText(mService, "Downloading...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            for (String permission : sPermission) {
+                if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(sPermission, REQUEST_PERMISSION_CODE);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if ((grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            TrackDownloadManager.getInstance(mService).downloadTrack(mService.getCurrentTrack());
+            Toast.makeText(mService, "Downloading...", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mService, "Can not download without your permission", Toast.LENGTH_SHORT).show();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void handleShare() {
@@ -296,7 +336,7 @@ public class PlayMusicFragment extends BaseFragment implements
             mService.startTrack();
             mImagePlay.setImageResource(R.drawable.ic_pause);
             mObjectAnimator.resume();
-        } else if(mService.getMediaPlayerState() == MediaPlayerStateType.PLAY){
+        } else if (mService.getMediaPlayerState() == MediaPlayerStateType.PLAY) {
             mService.pauseTrack();
             mImagePlay.setImageResource(R.drawable.ic_play);
             mObjectAnimator.pause();
@@ -309,13 +349,9 @@ public class PlayMusicFragment extends BaseFragment implements
     public void updateTrackInformation(Track track) {
         mTextTitle.setText(track.getTitle());
         mTextArtist.setText(track.getPublisher().getArtist());
-        mTextCurrentDuration.setText(getActivity().getString(R.string.text_temp_time));
-        mSeekBarPlay.setMax((int) track.getDuration());
-        mSeekBarPlay.setProgress(DEFAULT_PROGRESS);
-        if (mService != null) {
-            mSeekBarPlay.setProgress((int) mService.getCurrentDuration());
-            mTextCurrentDuration.setText(StringUtils.convertTimeInMilisToString(mService.getCurrentDuration()));
-        }
+        mTextCurrentDuration.setText(StringUtils.convertTimeInMilisToString(mService.getCurrentDuration()));
+        mTextTotalDuration.setText(StringUtils.convertTimeInMilisToString(track.getDuration()));
+        updateSeekBar();
         if (!mObjectAnimator.isStarted()) mObjectAnimator.start();
         if (mService.getMediaPlayerState() == MediaPlayerStateType.PLAY) {
             mObjectAnimator.resume();
@@ -335,7 +371,12 @@ public class PlayMusicFragment extends BaseFragment implements
                     .apply(new RequestOptions().circleCrop())
                     .into(mImageArtwork);
         }
-        mTextTotalDuration.setText(StringUtils.convertTimeInMilisToString(track.getDuration()));
+    }
+
+    private void updateSeekBar() {
+        mSeekBarPlay.setMax((int) mService.getCurrentTrack().getDuration());
+        mSeekBarPlay.setProgress((int) mService.getCurrentDuration());
+        mSeekBarPlay.setEnabled(false);
     }
 
     @Override
@@ -344,17 +385,20 @@ public class PlayMusicFragment extends BaseFragment implements
         if (state == MediaPlayerStateType.PREPARE) {
             mImagePlay.setVisibility(View.INVISIBLE);
             mProgressLoading.setVisibility(View.VISIBLE);
+            mSeekBarPlay.setEnabled(false);
 
         } else if (state == MediaPlayerStateType.PAUSE) {
             mProgressLoading.setVisibility(View.INVISIBLE);
             mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_play);
             mObjectAnimator.pause();
+            mSeekBarPlay.setEnabled(true);
         } else {
             mProgressLoading.setVisibility(View.INVISIBLE);
             mImagePlay.setVisibility(View.VISIBLE);
             mImagePlay.setImageResource(R.drawable.ic_pause);
             mObjectAnimator.resume();
+            mSeekBarPlay.setEnabled(true);
         }
     }
 
