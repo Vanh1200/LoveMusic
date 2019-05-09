@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseActivity;
 import com.vanh1200.lovemusic.base.BaseRecyclerViewAdapter;
+import com.vanh1200.lovemusic.base.LoadMoreListener;
 import com.vanh1200.lovemusic.data.model.History;
 import com.vanh1200.lovemusic.data.model.Track;
 import com.vanh1200.lovemusic.data.repository.TrackRepository;
@@ -35,6 +39,7 @@ import com.vanh1200.lovemusic.screen.play.PlayActivity;
 import com.vanh1200.lovemusic.screen.search.adapter.HistoryAdapter;
 import com.vanh1200.lovemusic.screen.search.adapter.ResultAdapter;
 import com.vanh1200.lovemusic.service.PlayMusicService;
+import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +48,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         SearchContract.View,
         ResultAdapter.OnResultListener,
         BaseRecyclerViewAdapter.ItemListener<History>,
-        TextView.OnEditorActionListener {
+        TextView.OnEditorActionListener, TextWatcher, OptionDialogFragment.OnOptionClickListener {
+    private static final long TIME_DELAY_SEARCH = 600;
     private ImageView mImageBack;
     private ImageView mImageMic;
     private EditText mTextSearch;
@@ -59,6 +65,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private Group mGroupResult;
     private PlayMusicService mService;
     private ServiceConnection mConnection;
+    private Handler mHandlerSearch;
+    private String mCurrentQuery;
+    private int mCurrentOffset = Constants.OFFSET;
 
     @Override
     protected int getLayoutResource() {
@@ -79,6 +88,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mPresenter = new SearchPresenter(TrackRepository.getInstance(
                 TrackLocalDataSource.getInstance(this),
                 TrackRemoteDataSource.getInstance()));
+        mHandlerSearch = new Handler();
         mPresenter.setView(this);
         initServiceConnection();
         registerEvent();
@@ -118,6 +128,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mRecyclerResult.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
         mRecyclerResult.setAdapter(mResultAdapter);
+        mRecyclerResult.addOnScrollListener(new LoadMoreListener() {
+            @Override
+            public void loadMore() {
+                mCurrentOffset += Constants.LIMIT;
+                mPresenter.loadMore(mCurrentQuery, Constants.LIMIT, mCurrentOffset);
+                mProgressLoadMore.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void initRecyclerHistory() {
@@ -132,6 +150,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mImageBack.setOnClickListener(this);
         mImageMic.setOnClickListener(this);
         mTextSearch.setOnEditorActionListener(this);
+        mTextSearch.addTextChangedListener(this);
     }
 
     @Override
@@ -168,6 +187,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     public void showResultFailed(String error) {
         mProgressLoading.setVisibility(View.INVISIBLE);
         Toast.makeText(this, getString(R.string.mess_search_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMore(List<Track> tracks) {
+        mResultAdapter.addItems(tracks);
+        mProgressLoadMore.setVisibility(View.INVISIBLE);
     }
 
     private void showResultFrame() {
@@ -207,9 +232,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            if (v.getText().toString().isEmpty()) return false;
-            mPresenter.loadResult(v.getText().toString());
-            mProgressLoading.setVisibility(View.VISIBLE);
+            /// TODO: 18/04/2019 add to search history
             hideKeyboard(mTextSearch);
             return true;
         }
@@ -234,5 +257,43 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void showOptionDialog(Track track) {
         OptionDialogFragment optionDialogFragment = OptionDialogFragment.newInstance(track);
         optionDialogFragment.show(getSupportFragmentManager(), optionDialogFragment.getTag());
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mCurrentQuery = s.toString();
+        mHandlerSearch.removeCallbacksAndMessages(null);
+        if (s.toString().isEmpty()) return;
+        final CharSequence s1 = s;
+        mHandlerSearch.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.loadResult(s1.toString(), Constants.LIMIT, Constants.OFFSET);
+                mProgressLoading.setVisibility(View.VISIBLE);
+            }
+        }, TIME_DELAY_SEARCH);
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onClickAddToFavorite(Track track) {
+        Toast.makeText(mService, "Added to favorite!", Toast.LENGTH_SHORT).show();
+        mPresenter.addToFavorite(track);
+    }
+
+    @Override
+    public void onClickAddToQueue(Track track) {
+        Toast.makeText(mService, "Added to queue!", Toast.LENGTH_SHORT).show();
+        mService.addTrack(track);
     }
 }

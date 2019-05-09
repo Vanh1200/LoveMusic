@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -22,11 +23,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.vanh1200.lovemusic.R;
 import com.vanh1200.lovemusic.base.BaseFragment;
 import com.vanh1200.lovemusic.data.model.Track;
+import com.vanh1200.lovemusic.data.repository.TrackRepository;
+import com.vanh1200.lovemusic.data.source.local.TrackLocalDataSource;
+import com.vanh1200.lovemusic.data.source.remote.TrackRemoteDataSource;
 import com.vanh1200.lovemusic.download.TrackDownloadManager;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerLoopType;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerShuffleType;
 import com.vanh1200.lovemusic.mediaplayer.MediaPlayerStateType;
 import com.vanh1200.lovemusic.screen.play.PlayActivity;
+import com.vanh1200.lovemusic.screen.search.SearchContract;
+import com.vanh1200.lovemusic.screen.search.SearchPresenter;
 import com.vanh1200.lovemusic.screen.timer.OnTimerListener;
 import com.vanh1200.lovemusic.screen.timer.TimerDialogFragment;
 import com.vanh1200.lovemusic.service.PlayMusicListener;
@@ -34,6 +40,8 @@ import com.vanh1200.lovemusic.service.PlayMusicService;
 import com.vanh1200.lovemusic.utils.Constants;
 import com.vanh1200.lovemusic.utils.StringUtils;
 import com.vanh1200.lovemusic.utils.TrackEntity;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class PlayMusicFragment extends BaseFragment implements
         View.OnClickListener,
@@ -72,6 +80,7 @@ public class PlayMusicFragment extends BaseFragment implements
     private ObjectAnimator mObjectAnimator;
     private Handler mHandlerSyncTime;
     private ProgressBar mProgressLoading;
+    private PlayMusicContract.Presenter mPresenter;
     private static String[] sPermission = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
@@ -135,6 +144,9 @@ public class PlayMusicFragment extends BaseFragment implements
         super.onActivityCreated(savedInstanceState);
         mService = ((PlayActivity) getActivity()).getService();
         mService.addPlayMusicListener(this);
+        mPresenter = new PlayMusicPresenter(TrackRepository
+                .getInstance(TrackLocalDataSource.getInstance(getActivity()),
+                        TrackRemoteDataSource.getInstance()));
         updateTrackInformation(mService.getCurrentTrack());
         updateLoopMusicSetting();
         updateShuffleMusicSetting();
@@ -221,6 +233,7 @@ public class PlayMusicFragment extends BaseFragment implements
                 getActivity().onBackPressed();
                 break;
             case R.id.image_favorite:
+                handleFavorite();
                 break;
             case R.id.image_download:
                 handleDownload();
@@ -246,6 +259,19 @@ public class PlayMusicFragment extends BaseFragment implements
             default:
                 break;
         }
+    }
+
+    private void handleFavorite() {
+        if(mPresenter.isFavoriteTrack(mService.getCurrentTrack())){
+            Toast.makeText(mService, "removed to favorite", Toast.LENGTH_SHORT).show();
+            mImageFavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+            mPresenter.removeFromFavorite(mService.getCurrentTrack());
+        } else{
+            Toast.makeText(mService, "Added to favorite", Toast.LENGTH_SHORT).show();
+            mImageFavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
+            mPresenter.addToFavorite(mService.getCurrentTrack());
+        }
+
     }
 
     private void handleDownload() {
@@ -351,6 +377,7 @@ public class PlayMusicFragment extends BaseFragment implements
         mTextArtist.setText(track.getPublisher().getArtist());
         mTextCurrentDuration.setText(StringUtils.convertTimeInMilisToString(mService.getCurrentDuration()));
         mTextTotalDuration.setText(StringUtils.convertTimeInMilisToString(track.getDuration()));
+        setFavorite(mPresenter.isFavoriteTrack(track));
         updateSeekBar();
         if (!mObjectAnimator.isStarted()) mObjectAnimator.start();
         if (mService.getMediaPlayerState() == MediaPlayerStateType.PLAY) {
@@ -360,6 +387,16 @@ public class PlayMusicFragment extends BaseFragment implements
             mObjectAnimator.pause();
             mImagePlay.setImageResource(R.drawable.ic_play);
         }
+
+        if(track.getArtworkUrl() == null){
+            Glide.with(getActivity())
+                    .load(R.drawable.square_logo)
+                    .apply(new RequestOptions().circleCrop())
+                    .into(mImageArtwork);
+            return;
+        }
+
+
         if (!track.getArtworkUrl().equals(TrackEntity.ARTWORK_URL)) {
             Glide.with(getActivity())
                     .load(track.getArtworkUrl())
@@ -370,6 +407,14 @@ public class PlayMusicFragment extends BaseFragment implements
                     .load(R.drawable.square_logo)
                     .apply(new RequestOptions().circleCrop())
                     .into(mImageArtwork);
+        }
+    }
+
+    private void setFavorite(boolean isFavorite) {
+        if(isFavorite){
+            mImageFavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
+        } else {
+            mImageFavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
         }
     }
 
@@ -446,4 +491,5 @@ public class PlayMusicFragment extends BaseFragment implements
             }
         }
     }
+
 }

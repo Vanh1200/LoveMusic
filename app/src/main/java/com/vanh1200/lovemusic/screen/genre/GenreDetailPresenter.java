@@ -24,6 +24,26 @@ public class GenreDetailPresenter implements GenreDetailContract.Presenter,
                 this);
     }
 
+    @Override
+    public void loadLocalTracks() {
+        mView.showLocalTracks(mTrackRepository.getLocalTracks());
+    }
+
+    @Override
+    public void loadFavoriteTracks() {
+        mView.showFavoriteTracks(mTrackRepository.getFavoriteTracks());
+    }
+
+    @Override
+    public void loadDownloadedTracks() {
+        mView.showDownloadedTracks(mTrackRepository.getDownloadTracks());
+    }
+
+    @Override
+    public void addToFavorite(Track track) {
+        mTrackRepository.addTrackToFavorite(track);
+    }
+
     public void setView(GenreDetailContract.View view) {
         mView = view;
     }

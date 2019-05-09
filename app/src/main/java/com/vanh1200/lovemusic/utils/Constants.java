@@ -22,6 +22,11 @@ public final class Constants {
     public static final String GENRES_AMBIENT = "soundcloud:genres:ambient";
     public static final String GENRES_CLASSICAL = "soundcloud:genres:classical";
     public static final String GENRES_COUNTRY = "soundcloud:genres:country";
+    public static final String GENRES_LOCAL = "Local";
+    public static final String GENRES_FAVORITE = "Favorite";
+    public static final String GENRES_DOWNLOAD = "Download";
+
+    public static final int NO_IMAGE = 0;
 
     public static final int OFFSET = 0;
     public static final int LIMIT = 50;
@@ -41,4 +46,7 @@ public final class Constants {
     public static final String ACTION_CLOSE = "com.vanh1200.lovemusic.ACTION_CLOSE";
     public static final int DEFAULT_NOTIFY_SIZE = 100;
     public static final String KEY_TIMER = "key_timer";
+    public static final String KEY_INTENT_GENRE_LOCAL = "key_intent_genre_local";
+    public static final String KEY_INTENT_GENRE_DOWNLOAD = "key_intent_genre_download";
+    public static final String KEY_INTENT_GENRE_FAVORITE = "key_intent_genre_favorite";
 }

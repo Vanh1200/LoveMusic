@@ -22,13 +22,13 @@ import java.util.List;
 
 public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
         SuggestedTracksAdapter.ViewHolder> {
-    private List<Track> mTracks;
+
     private Context mContext;
     private OnClickSuggestedTracks mListener;
 
     public SuggestedTracksAdapter(List<Track> tracks) {
         super();
-        mTracks = tracks;
+        mData = tracks;
     }
 
     public void setListener(OnClickSuggestedTracks listener) {
@@ -41,17 +41,17 @@ public class SuggestedTracksAdapter extends BaseRecyclerViewAdapter<Track,
         mContext = viewGroup.getContext();
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_suggested_track, viewGroup, false);
-        return new ViewHolder(view, mTracks, mListener);
+        return new ViewHolder(view, mData, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.bindData(mTracks.get(i), mContext);
+        viewHolder.bindData(mData.get(i), mContext);
     }
 
     @Override
     public int getItemCount() {
-        return mTracks == null ? 0 : mTracks.size();
+        return mData == null ? 0 : mData.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

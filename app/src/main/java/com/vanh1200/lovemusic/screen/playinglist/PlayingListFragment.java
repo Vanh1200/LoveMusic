@@ -59,6 +59,7 @@ public class PlayingListFragment extends BaseFragment
 
     private void getPlayMusicService() {
         mService = ((PlayActivity) getActivity()).getService();
+        mService.addPlayMusicListener(this);
         mTracks = mService.getTracks();
         mCurrentTrack = mService.getCurrentTrack();
         showPlayingList(mTracks);

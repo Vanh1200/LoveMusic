@@ -15,11 +15,18 @@ public interface SearchContract {
         void showResultSuccess(List<Track> tracks);
 
         void showResultFailed(String error);
+
+        void showMore(List<Track> tracks);
     }
 
     interface Presenter extends BasePresenter<View> {
         void loadHistory();
 
-        void loadResult(String query);
+        void loadResult(String query, int limit, int offset);
+
+        void loadMore(String query, int limit, int offset);
+
+        void addToFavorite(Track track);
+
     }
 }

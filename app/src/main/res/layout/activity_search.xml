@@ -108,9 +108,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_15"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/dp_50"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/frame_mini_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/text_result"
         app:layout_constraintTop_toBottomOf="@id/text_result" />
@@ -134,7 +132,8 @@
         android:indeterminateTint="@color/color_violet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_result"
+        app:layout_constraintBottom_toTopOf="@id/frame_mini_play"
         android:visibility="invisible"/>
 
     <FrameLayout
@@ -144,6 +143,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress_load_more"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

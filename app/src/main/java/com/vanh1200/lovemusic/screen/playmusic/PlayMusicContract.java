@@ -9,5 +9,10 @@ public class PlayMusicContract {
     }
 
     interface Presenter extends BasePresenter<View> {
+        void addToFavorite(Track track);
+
+        void removeFromFavorite(Track track);
+
+        boolean isFavoriteTrack(Track track);
     }
 }

@@ -37,6 +37,12 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         notifyItemInserted(mData.size() - 1);
     }
 
+    public void addItems(List<T> data){
+        int preSize = data.size();
+        mData.addAll(data);
+        notifyItemRangeChanged(preSize, mData.size() - 1);
+    }
+
     public void removeItem(int position) {
         mData.remove(position);
         notifyItemRemoved(position);

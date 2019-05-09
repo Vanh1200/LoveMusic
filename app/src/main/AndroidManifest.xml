@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/circle_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".utils.MyApplication">
         <activity android:name="com.vanh1200.lovemusic.screen.main.MainActivity" />
         <activity
             android:name=".screen.splash.SplashActivity"

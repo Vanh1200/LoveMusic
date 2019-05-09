@@ -1,5 +1,6 @@
 package com.vanh1200.lovemusic.screen.option;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,8 +28,16 @@ public class OptionDialogFragment extends BottomSheetDialogFragment implements O
     private TextView mTextAddToFavorite;
     private TextView mTextAddToPlaylist;
     private TextView mTextAddToQueuePlayNext;
+    private OnOptionClickListener mListener;
+    private Track mCurrentTrack;
 
     public OptionDialogFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnOptionClickListener) getActivity();
     }
 
     @Override
@@ -42,7 +51,7 @@ public class OptionDialogFragment extends BottomSheetDialogFragment implements O
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_option, container, false);
         initViews(view);
-        displayInfomation();
+        displayInformation();
         registerEvents();
         return view;
     }
@@ -53,8 +62,9 @@ public class OptionDialogFragment extends BottomSheetDialogFragment implements O
         mTextAddToQueuePlayNext.setOnClickListener(this);
     }
 
-    private void displayInfomation() {
+    private void displayInformation() {
         Track track = getArguments().getParcelable(Constants.KEY_BUNDLE_TRACK);
+        mCurrentTrack = track;
         if (track != null) {
             mTextTitle.setText(track.getTitle());
             mTextArtist.setText(track.getPublisher().getArtist());
@@ -99,13 +109,33 @@ public class OptionDialogFragment extends BottomSheetDialogFragment implements O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_add_to_favorite:
+                handleAddToFavorite();
                 break;
             case R.id.text_add_to_playlist:
                 break;
             case R.id.text_add_to_queue_play_next:
+                handleAddToQueue();
                 break;
             default:
                 break;
         }
+    }
+
+    private void handleAddToQueue() {
+        if(mListener != null && mCurrentTrack != null){
+            mListener.onClickAddToQueue(mCurrentTrack);
+        }
+    }
+
+    private void handleAddToFavorite() {
+        if(mListener != null && mCurrentTrack != null){
+            mListener.onClickAddToFavorite(mCurrentTrack);
+        }
+    }
+
+    public interface OnOptionClickListener{
+        void onClickAddToFavorite(Track track);
+
+        void onClickAddToQueue(Track track);
     }
 }

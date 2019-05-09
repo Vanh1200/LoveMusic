@@ -7,6 +7,20 @@ import java.util.List;
 
 public class TrackDataSource {
     public interface LocalDataSource {
+        List<Track> getLocalTracks();
+
+        List<Track> getFavoriteTracks();
+
+        List<Track> getDownloadTracks();
+
+        List<Track> getPlaylists();
+
+        boolean isFavoriteTrack(Track track);
+
+        void addTrackToFavorite(Track track);
+
+        void removeTrackFromFavorite(Track track);
+
     }
 
     public interface RemoteDataSource {
