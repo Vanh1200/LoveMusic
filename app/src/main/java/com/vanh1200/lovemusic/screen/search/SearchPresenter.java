@@ -10,6 +10,7 @@ import java.util.List;
 public class SearchPresenter implements SearchContract.Presenter, TrackRemoteDataSource.OnGetTracksByQuery {
     private SearchContract.View mView;
     private TrackRepository mRepository;
+    private boolean isLoadMore = false;
 
     public SearchPresenter(TrackRepository trackRepository) {
         mRepository = trackRepository;
@@ -20,8 +21,20 @@ public class SearchPresenter implements SearchContract.Presenter, TrackRemoteDat
     }
 
     @Override
-    public void loadResult(String query) {
-        mRepository.getTracksByQuery(query, Constants.LIMIT, Constants.OFFSET, this);
+    public void loadResult(String query, int limit, int offset) {
+        isLoadMore = false;
+        mRepository.getTracksByQuery(query, limit, offset, this);
+    }
+
+    @Override
+    public void loadMore(String query, int limit, int offset) {
+        isLoadMore = true;
+        mRepository.getTracksByQuery(query, limit, offset, this);
+    }
+
+    @Override
+    public void addToFavorite(Track track) {
+        mRepository.addTrackToFavorite(track);
     }
 
     @Override
@@ -31,7 +44,11 @@ public class SearchPresenter implements SearchContract.Presenter, TrackRemoteDat
 
     @Override
     public void onGetTracksSuccess(List<Track> tracks) {
-        mView.showResultSuccess(tracks);
+        if (isLoadMore){
+            mView.showMore(tracks);
+        } else {
+            mView.showResultSuccess(tracks);
+        }
     }
 
     @Override

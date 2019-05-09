@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -86,6 +84,15 @@ public class PlayActivity extends BaseActivity implements PlayMusicListener {
     }
 
     private void changeBackground(String artworkUrl) {
+        if(artworkUrl == null){
+            mImageDarkCover.setVisibility(View.INVISIBLE);
+            Glide.with(this)
+                    .load(R.drawable.bg_play_song_default)
+                    .into(mImageBackground);
+            return;
+        }
+
+
         if (artworkUrl.equals(TrackEntity.ARTWORK_URL) || artworkUrl.isEmpty()) {
             mImageDarkCover.setVisibility(View.INVISIBLE);
             Glide.with(this)
@@ -128,7 +135,7 @@ public class PlayActivity extends BaseActivity implements PlayMusicListener {
         // action bar height
         int actionBarHeight = 0;
         final TypedArray styledAttributes = getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.actionBarSize }
+                new int[]{android.R.attr.actionBarSize}
         );
         actionBarHeight = (int) styledAttributes.getDimension(0, 0);
         styledAttributes.recycle();

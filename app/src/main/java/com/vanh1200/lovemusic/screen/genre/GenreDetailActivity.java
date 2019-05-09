@@ -38,9 +38,10 @@ import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GenreDetailActivity extends BaseActivity implements GenreDetailContract.View,
-        GenreTrackAdapter.OnClickTrackListener, View.OnClickListener {
+        GenreTrackAdapter.OnClickTrackListener, View.OnClickListener, OptionDialogFragment.OnOptionClickListener {
     private static final String NOTIFICATION_FETCH_TRACKS_FAILED = "get tracks failed";
     private RecyclerView mRecyclerTrack;
     private TextView mTextGenre;
@@ -109,7 +110,7 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
         bindService(PlayMusicService.getIntent(this), mConnection, BIND_AUTO_CREATE);
     }
 
-    private void removeServiceConnection(){
+    private void removeServiceConnection() {
         unbindService(mConnection);
     }
 
@@ -143,7 +144,48 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
     private void getIncomingIntent() {
         Intent intent = getIntent();
         Genre genre = intent.getParcelableExtra(Constants.KEY_INTENT_GENRE);
-        handleGenre(genre);
+        if (genre != null)
+            handleGenre(genre);
+        Genre genre1 = intent.getParcelableExtra(Constants.KEY_INTENT_GENRE_LOCAL);
+        if (genre1 != null)
+            handleGenreLocal(genre1);
+        Genre genre2 = intent.getParcelableExtra(Constants.KEY_INTENT_GENRE_DOWNLOAD);
+        if (genre2 != null)
+            handleGenreDownload(genre2);
+        Genre genre3 = intent.getParcelableExtra(Constants.KEY_INTENT_GENRE_FAVORITE);
+        if (genre3 != null)
+            handleGenreFavorite(genre3);
+
+    }
+
+    private void handleGenreFavorite(Genre genre) {
+        mTextGenre.setText(genre.getName());
+        mImageGenre.setImageResource(genre.getImageUrl());
+        Glide.with(this)
+                .load(genre.getImageUrl())
+                .into(mImageSmallArtWork);
+        mToolbar.setTitle(genre.getName());
+        mPresenter.loadFavoriteTracks();
+    }
+
+    private void handleGenreDownload(Genre genre) {
+        mTextGenre.setText(genre.getName());
+        mImageGenre.setImageResource(genre.getImageUrl());
+        Glide.with(this)
+                .load(genre.getImageUrl())
+                .into(mImageSmallArtWork);
+        mToolbar.setTitle(genre.getName());
+        mPresenter.loadDownloadedTracks();
+    }
+
+    private void handleGenreLocal(Genre genre) {
+        mTextGenre.setText(genre.getName());
+        mImageGenre.setImageResource(genre.getImageUrl());
+        Glide.with(this)
+                .load(genre.getImageUrl())
+                .into(mImageSmallArtWork);
+        mToolbar.setTitle(genre.getName());
+        mPresenter.loadLocalTracks();
     }
 
     private void handleGenre(Genre genre) {
@@ -205,6 +247,33 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
     }
 
     @Override
+    public void showLocalTracks(List<Track> tracks) {
+        mTracks = new ArrayList<>();
+        mTracks.addAll(tracks);
+        mProgressBarGenreDetail.setVisibility(View.INVISIBLE);
+        mRecyclerTrack.setVisibility(View.VISIBLE);
+        initRecycler(tracks);
+    }
+
+    @Override
+    public void showFavoriteTracks(List<Track> tracks) {
+        mTracks = new ArrayList<>();
+        mTracks.addAll(tracks);
+        mProgressBarGenreDetail.setVisibility(View.INVISIBLE);
+        mRecyclerTrack.setVisibility(View.VISIBLE);
+        initRecycler(tracks);
+    }
+
+    @Override
+    public void showDownloadedTracks(List<Track> tracks) {
+        mTracks = new ArrayList<>();
+        mTracks.addAll(tracks);
+        mProgressBarGenreDetail.setVisibility(View.INVISIBLE);
+        mRecyclerTrack.setVisibility(View.VISIBLE);
+        initRecycler(tracks);
+    }
+
+    @Override
     public void onClickTrack(Track track) {
         mService.addTrack(track);
         mService.addTracks(mTracks);
@@ -227,10 +296,26 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_shuffle:
+                handleShuffle();
                 break;
             default:
                 break;
         }
+    }
+
+    private void handleShuffle() {
+        Track track = getRandomTrack();
+        mService.addTrack(track);
+        mService.addTracks(mTracks);
+        mService.changeTrack(track);
+        showMiniPlayer();
+        startActivity(PlayActivity.getIntent(this));
+    }
+
+    private Track getRandomTrack() {
+        Random rd = new Random();
+        int position = rd.nextInt(mTracks.size() - 1);
+        return mTracks.get(position);
     }
 
     public void showMiniPlayer() {
@@ -241,5 +326,17 @@ public class GenreDetailActivity extends BaseActivity implements GenreDetailCont
                     .replace(R.id.frame_mini_play, MiniPlayerFragment.newInstance())
                     .commitAllowingStateLoss();
         }
+    }
+
+    @Override
+    public void onClickAddToFavorite(Track track) {
+        Toast.makeText(mService, "Added to favorite!", Toast.LENGTH_SHORT).show();
+        mPresenter.addToFavorite(track);
+    }
+
+    @Override
+    public void onClickAddToQueue(Track track) {
+        Toast.makeText(mService, "Added to queue!", Toast.LENGTH_SHORT).show();
+        mService.addTrack(track);
     }
 }

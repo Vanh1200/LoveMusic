@@ -45,4 +45,8 @@
     <string name="text_previous">previous</string>
     <string name="chanel_id">Love music</string>
     <string name="animation_rotation">rotation</string>
+    <string name="title_downloaded">Downloaded</string>
+    <string name="title_my_songs">My Songs</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_play_list">PlayLists</string>
 </resources>

@@ -134,6 +134,15 @@ public class MiniPlayerFragment extends BaseFragment implements View.OnClickList
             mObjectAnimator.pause();
             mImagePlay.setImageResource(R.drawable.ic_notify_play);
         }
+
+        if(track.getArtworkUrl() == null){
+            Glide.with(this)
+                    .load(R.drawable.square_logo)
+                    .apply(new RequestOptions().circleCrop())
+                    .into(mImageArtwork);
+            return;
+        }
+
         if (track.getArtworkUrl().equals(TrackEntity.ARTWORK_URL)) {
             Glide.with(this)
                     .load(R.drawable.square_logo)

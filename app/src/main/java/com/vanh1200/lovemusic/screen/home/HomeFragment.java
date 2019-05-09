@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -36,10 +37,14 @@ import com.vanh1200.lovemusic.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends BaseFragment implements HomeContract.View,
         SuggestedTracksAdapter.OnClickSuggestedTracks, View.OnClickListener
-        , SliderFragment.OnClickItem {
+        , SliderAdapter.OnClickSlideListener, ViewPager.OnPageChangeListener {
+    private static final long TIME_NEXT_SLIDE = 2500;
+    private static final long TIME_ANIMATION_SLIDE = 100;
     private static HomeFragment sInstance;
     private ViewPager mViewPager;
     private SliderAdapter mSliderAdapter;
@@ -47,7 +52,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private RecyclerView mRecyclerSuggestedTracks;
     private Toolbar mToolbar;
     private TextView mTextSuggested;
-    private TextView mTextPopularPlaylists;
+    private TextView mTextPopularPlayLists;
     private ImageView mImageAllMusic;
     private ImageView mImageAllAudio;
     private ImageView mImageAmbient;
@@ -57,7 +62,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private TextView mTextSearchTracks;
     private HomePresenter mPresenter;
     private TrackRepository mTrackRepository;
-    private List<SliderFragment> mFragments;
     private Genre mGenreAllMusic;
     private Genre mGenreAllAudio;
     private Genre mGenreRock;
@@ -70,6 +74,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private List<Track> mSliderTracks;
     private ProgressBar mProgressLoading;
     private View mViewBackground;
+    private int mCurrentSlide = 0;
 
     @Override
     protected int getLayoutResource() {
@@ -81,7 +86,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
         mViewPager = view.findViewById(R.id.view_pager);
         mRecyclerSuggestedTracks = view.findViewById(R.id.recycle_suggested_tracks);
         mTextSuggested = view.findViewById(R.id.text_suggested);
-        mTextPopularPlaylists = view.findViewById(R.id.text_popular_playlist);
+        mTextPopularPlayLists = view.findViewById(R.id.text_popular_playlist);
         mImageAllMusic = view.findViewById(R.id.image_all_music);
         mImageAllAudio = view.findViewById(R.id.image_all_audio);
         mImageRock = view.findViewById(R.id.image_rock);
@@ -97,8 +102,46 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
                 TrackRemoteDataSource.getInstance());
         mPresenter = new HomePresenter(mTrackRepository);
         mPresenter.setView(this);
+        initDataForSlider();
+        initDataForSuggestedTracks();
+        initRecyclerViews();
         registerEvents();
         initServiceConnection();
+    }
+
+    private void initSlideTimer() {
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentSlide == mViewPager.getAdapter().getCount()) {
+                    mCurrentSlide = 0;
+                }
+                mViewPager.setCurrentItem(mCurrentSlide++, true);
+            }
+        };
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, TIME_ANIMATION_SLIDE, TIME_NEXT_SLIDE);
+    }
+
+
+    private void initRecyclerViews() {
+        mSliderAdapter = new SliderAdapter();
+        mViewPager.setAdapter(mSliderAdapter);
+        mSliderAdapter.setListener(this);
+        mViewPager.setAdapter(mSliderAdapter);
+
+        mSuggestedTracksAdapter = new SuggestedTracksAdapter(new ArrayList<Track>());
+        mSuggestedTracksAdapter.setListener(this);
+        mRecyclerSuggestedTracks.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerSuggestedTracks.setAdapter(mSuggestedTracksAdapter);
+        mRecyclerSuggestedTracks.setNestedScrollingEnabled(false);
+        initSlideTimer();
     }
 
     @Override
@@ -116,8 +159,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mService = ((PlayMusicService.PlayBinder) service).getService();
-                initDataForSlider();
-                initDataForSuggestedTracks();
             }
 
             @Override
@@ -160,7 +201,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
 
     private void registerEvents() {
         mTextSuggested.setOnClickListener(this);
-        mTextPopularPlaylists.setOnClickListener(this);
+        mTextPopularPlayLists.setOnClickListener(this);
         mImageAllMusic.setOnClickListener(this);
         mImageAllAudio.setOnClickListener(this);
         mImageAmbient.setOnClickListener(this);
@@ -168,6 +209,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
         mImageClassical.setOnClickListener(this);
         mImageCountry.setOnClickListener(this);
         mTextSearchTracks.setOnClickListener(this);
+        mViewPager.addOnPageChangeListener(this);
     }
 
     private void initDataForSuggestedTracks() {
@@ -197,16 +239,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     @Override
     public void onFetchDataForSliderSuccess(List<Track> tracks) {
         mSliderTracks = tracks;
-        mSliderAdapter = new SliderAdapter(getChildFragmentManager());
-        mFragments = new ArrayList<>();
-        for (int i = 0; i < tracks.size(); i++) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.KEY_BUNDLE_TRACK, tracks.get(i));
-            SliderFragment sliderFragment = SliderFragment.newInstance(bundle);
-            mFragments.add(sliderFragment);
-        }
-        mSliderAdapter.setFragmentSlider(mFragments);
-        mViewPager.setAdapter(mSliderAdapter);
+        mSliderAdapter.setTracks(tracks);
     }
 
     @Override
@@ -217,12 +250,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     @Override
     public void onFetchDataForSuggestedSuccess(List<Track> tracks) {
         mSuggestedTracks = tracks;
-        mSuggestedTracksAdapter = new SuggestedTracksAdapter(tracks);
-        mSuggestedTracksAdapter.setListener(this);
-        mRecyclerSuggestedTracks.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false));
-        mRecyclerSuggestedTracks.setAdapter(mSuggestedTracksAdapter);
-        mRecyclerSuggestedTracks.setNestedScrollingEnabled(false);
+        mSuggestedTracksAdapter.setData(tracks);
     }
 
     @Override
@@ -232,7 +260,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
 
     @Override
     public void onFetchDataComplete(boolean isAllLoaded) {
-        if(isAllLoaded){
+        if (isAllLoaded) {
             mViewBackground.setVisibility(View.INVISIBLE);
             mProgressLoading.setVisibility(View.INVISIBLE);
         }
@@ -291,11 +319,27 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     }
 
     @Override
-    public void onClickSlide(Track track) {
+    public void onClickSlide() {
+        Track track = mSliderTracks.get(mViewPager.getCurrentItem());
         mService.addTrack(track);
         mService.addTracks(mSliderTracks);
         mService.changeTrack(track);
         ((MainActivity) getActivity()).showMiniPlayer();
         startActivity(PlayActivity.getIntent(getActivity()));
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageSelected(int i) {
+        mCurrentSlide = i;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
     }
 }

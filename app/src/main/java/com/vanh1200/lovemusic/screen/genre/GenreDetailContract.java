@@ -11,9 +11,24 @@ public interface GenreDetailContract {
         void onGetTracksFailed(String error);
 
         void onGetTracksSuccess(List<Track> tracks);
+
+        void showLocalTracks(List<Track> tracks);
+
+        void showFavoriteTracks(List<Track> tracks);
+
+        void showDownloadedTracks(List<Track> tracks);
     }
 
     interface Presenter {
         void fetchTracksByGenre(String genre);
+
+        void loadLocalTracks();
+
+        void loadFavoriteTracks();
+
+        void loadDownloadedTracks();
+
+        void addToFavorite(Track track);
+
     }
 }

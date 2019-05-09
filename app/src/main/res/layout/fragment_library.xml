@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view_action_bar"
+        android:layout_width="0dp"
+        android:layout_height="?android:actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_music"
+        android:layout_width="@dimen/dp_35"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginStart="@dimen/dp_15"
+        android:src="@drawable/soundcloud"
+        app:layout_constraintBottom_toBottomOf="@id/view_action_bar"
+        app:layout_constraintStart_toStartOf="@id/view_action_bar"
+        app:layout_constraintTop_toTopOf="@id/view_action_bar" />
+
+    <TextView
+        android:id="@+id/text_search"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_38"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@drawable/bg_search"
+        android:drawableLeft="@drawable/ic_search_black_24dp"
+        android:drawablePadding="@dimen/dp_15"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dp_20"
+        android:text="@string/text_search_tracks"
+        android:textColor="@color/color_blue_gray"
+        app:layout_constraintBottom_toBottomOf="@id/view_action_bar"
+        app:layout_constraintEnd_toEndOf="@id/view_action_bar"
+        app:layout_constraintStart_toEndOf="@id/image_music"
+        app:layout_constraintTop_toTopOf="@id/view_action_bar" />
+
+    <View
+        android:id="@+id/view_click_phone"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_action_bar" />
+
+    <View
+        android:id="@+id/view_bg_phone"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/bg_circle_gray"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_phone"
+        app:layout_constraintStart_toStartOf="@id/view_click_phone"
+        app:layout_constraintTop_toTopOf="@id/view_click_phone" />
+
+    <ImageView
+        android:id="@+id/image_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_phone_android_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg_phone"
+        app:layout_constraintEnd_toEndOf="@id/view_bg_phone"
+        app:layout_constraintStart_toStartOf="@id/view_bg_phone"
+        app:layout_constraintTop_toTopOf="@id/view_bg_phone" />
+
+    <TextView
+        android:id="@+id/text_my_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="@string/text_my_songs"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_phone"
+        app:layout_constraintStart_toEndOf="@id/view_bg_phone"
+        app:layout_constraintTop_toTopOf="@id/view_click_phone" />
+
+    <TextView
+        android:id="@+id/text_number_my_songs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_phone"
+        app:layout_constraintEnd_toEndOf="@id/view_click_phone"
+        app:layout_constraintTop_toTopOf="@id/view_click_phone" />
+
+    <View
+        android:id="@+id/view_click_download"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_click_phone" />
+
+    <View
+        android:id="@+id/view_bg_download"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/bg_circle_gray"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_download"
+        app:layout_constraintStart_toStartOf="@id/view_click_download"
+        app:layout_constraintTop_toTopOf="@id/view_click_download" />
+
+    <ImageView
+        android:id="@+id/image_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_file_download_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg_download"
+        app:layout_constraintEnd_toEndOf="@id/view_bg_download"
+        app:layout_constraintStart_toStartOf="@id/view_bg_download"
+        app:layout_constraintTop_toTopOf="@id/view_bg_download" />
+
+    <TextView
+        android:id="@+id/text_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="@string/text_download"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_download"
+        app:layout_constraintStart_toEndOf="@id/view_bg_download"
+        app:layout_constraintTop_toTopOf="@id/view_click_download" />
+
+    <TextView
+        android:id="@+id/text_number_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_download"
+        app:layout_constraintEnd_toEndOf="@id/view_click_download"
+        app:layout_constraintTop_toTopOf="@id/view_click_download" />
+
+    <View
+        android:id="@+id/view_click_favorite"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_click_download" />
+
+    <View
+        android:id="@+id/view_bg_favorite"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/bg_circle_gray"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_favorite"
+        app:layout_constraintStart_toStartOf="@id/view_click_favorite"
+        app:layout_constraintTop_toTopOf="@id/view_click_favorite" />
+
+    <ImageView
+        android:id="@+id/image_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_favorite_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg_favorite"
+        app:layout_constraintEnd_toEndOf="@id/view_bg_favorite"
+        app:layout_constraintStart_toStartOf="@id/view_bg_favorite"
+        app:layout_constraintTop_toTopOf="@id/view_bg_favorite" />
+
+    <TextView
+        android:id="@+id/text_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="@string/text_favorite"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_favorite"
+        app:layout_constraintStart_toEndOf="@id/view_bg_favorite"
+        app:layout_constraintTop_toTopOf="@id/view_click_favorite" />
+
+    <TextView
+        android:id="@+id/text_number_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_favorite"
+        app:layout_constraintEnd_toEndOf="@id/view_click_favorite"
+        app:layout_constraintTop_toTopOf="@id/view_click_favorite" />
+
+    <View
+        android:id="@+id/view_click_playlist"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_click_favorite" />
+
+    <View
+        android:id="@+id/view_bg_playlist"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/bg_circle_gray"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_playlist"
+        app:layout_constraintStart_toStartOf="@id/view_click_playlist"
+        app:layout_constraintTop_toTopOf="@id/view_click_playlist" />
+
+    <ImageView
+        android:id="@+id/image_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_playlist_play_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg_playlist"
+        app:layout_constraintEnd_toEndOf="@id/view_bg_playlist"
+        app:layout_constraintStart_toStartOf="@id/view_bg_playlist"
+        app:layout_constraintTop_toTopOf="@id/view_bg_playlist" />
+
+    <TextView
+        android:id="@+id/text_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="@string/text_playlist"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_playlist"
+        app:layout_constraintStart_toEndOf="@id/view_bg_playlist"
+        app:layout_constraintTop_toTopOf="@id/view_click_playlist" />
+
+    <TextView
+        android:id="@+id/text_number_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_click_playlist"
+        app:layout_constraintEnd_toEndOf="@id/view_click_playlist"
+        app:layout_constraintTop_toTopOf="@id/view_click_playlist" />
+
+</android.support.constraint.ConstraintLayout>

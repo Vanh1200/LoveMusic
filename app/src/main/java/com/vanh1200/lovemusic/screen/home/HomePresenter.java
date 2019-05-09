@@ -41,7 +41,7 @@ public class HomePresenter implements HomeContract.Presenter,
     @Override
     public void initDataForSlider(String genre) {
         mTrackRepository.getTracksByGenre(genre,
-                        10,
+                        8,
                         Constants.OFFSET,
                         this);
         isSlidesLoaded = true;
