@@ -58,10 +58,9 @@ public class FetchTracksAsync extends AsyncTask<String, Void, List<Track>> {
             while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line).append(SYMBOL_NEW_LINE);
             }
-            JSONObject jsonObject = new JSONObject(builder.toString());
-            JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray(ApiEntity.COLLECTION).toString());
+            JSONArray jsonArray = new JSONArray(builder.toString());
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObjectTrack = jsonArray.getJSONObject(i).getJSONObject(ApiEntity.TRACK);
+                JSONObject jsonObjectTrack = jsonArray.getJSONObject(i);
                 Track track = new Track();
                 if (!jsonObjectTrack.isNull(TrackEntity.ARTWORK_URL)) {
                     track.setArtworkUrl(StringUtils.reformatImageUrl(jsonObjectTrack.
